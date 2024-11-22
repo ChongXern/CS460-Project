@@ -82,9 +82,14 @@ if __name__ == "__main__":
     # Extract audio from YouTube
     audio_filepath = AudioLecture.extract_audio_from_youtube(video_url, output_dir)
     #duration = librosa.get_duration(filename=audio_filepath)
+    #y, sr = librosa.load(audio_filepath, sr=None)
+    #duration = len(y) / sr
     duration = 0
     name = video_url.split('=')[-1]
     spectrogram_filepath = f"spectrograms/{name}.png"  # replace w/ actual path
+    open(spectrogram_filepath, "w").close()
+    #print(f"AA: {audio_filepath} & {spectrogram_filepath}")
+    generate_spectrogram(f"{audio_filepath}.mp3", spectrogram_filepath)
     transitions = []  # init empty list of transitions
 
     audio_lecture = AudioLecture(
