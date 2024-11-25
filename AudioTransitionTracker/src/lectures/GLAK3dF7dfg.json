@@ -4,5 +4,5 @@
     "audio_filepath": "audio_files/audio_GLAK3dF7dfg",
     "spectrogram_filepath": "spectrograms/GLAK3dF7dfg.png",
     "duration": 467,
-    "transitions": []
+    "transitions": [8, 18, 27, 36, 49, 59, 95, 131, 150, 162, 175, 198, 239, 247, 274, 284, 295, 304, 307, 314, 316, 321, 328, 349, 354, 362, 379, 385, 387, 396, 410, 421, 425, 437, 454]
 }
