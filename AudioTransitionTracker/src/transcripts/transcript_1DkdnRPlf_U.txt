@@ -1,46 +1,42 @@
-timestamp 0: the guardian
-timestamp 1: is reporting
-timestamp 2: that taiwan's former president
-timestamp 3: sanguan was
-timestamp 4: supposed to visit the
-timestamp 5: UK last
-timestamp 6: month but by the
-timestamp 7: was stopped British foreign
-timestamp 8: office citing leaked letter
-timestamp 9: a sa was
-timestamp 10: originally going spend two
-timestamp 11: to days in
-timestamp 12: London and
-timestamp 13: could have addressed
-timestamp 14: Parliament
-timestamp 15: however anonymous source
-timestamp 16: an said the office asked
-timestamp 17: UK foreign s to
-timestamp 18: postpone her because foreign
-timestamp 19: visit secretary David
-timestamp 20: Lamy was visiting China
-timestamp 21: at the
-timestamp 22: same time opposes high
-timestamp 23: Beijing level visits
-timestamp 24: by Taiwanese politicians to
-timestamp 25: other countries
-timestamp 26: and the office worried
-timestamp 27: that sii's
-timestamp 28: trip could have interfered
-timestamp 29: with lamies
-timestamp 30: Sai was Europe for
-timestamp 31: in her first
-timestamp 32: international trip since leaving
-timestamp 33: office she
-timestamp 34: visited France Belgium and
-timestamp 35: the Czech
-timestamp 36: Republic there's
-timestamp 37: been talk
-timestamp 38: of inviting
-timestamp 39: to visit next
-timestamp 40: the UK spring
-timestamp 41: but another highlevel
-timestamp 42: that British visit
-timestamp 43: may to China
-timestamp 44: conflict
-timestamp 45: with
+timestamp 0: the guardian is reporting that taiwan's
+
+timestamp 2: former president sanguan was supposed to
+
+timestamp 4: visit the UK last month but was stopped
+
+timestamp 6: by the British foreign office citing a
+
+timestamp 8: leaked letter sa was originally going to
+
+timestamp 10: spend two days in London and could have
+
+
+timestamp 13: addressed Parliament however an
+
+timestamp 15: anonymous source said the UK foreign
+timestamp 16: office asked s to postpone her visit
+
+timestamp 18: because foreign secretary David Lamy was
+
+timestamp 20: visiting China at the same time Beijing
+
+timestamp 22: opposes high level visits by Taiwanese
+
+timestamp 24: politicians to other countries and the
+
+timestamp 26: office worried that sii's trip could
+
+timestamp 28: have interfered with lamies Sai was in
+
+timestamp 30: Europe for her first international trip
+
+timestamp 32: since leaving office she visited France
+
+timestamp 34: Belgium and the Czech Republic there's
+
+
+timestamp 37: been talk of inviting to visit the UK
+
+timestamp 39: next spring but that may conflict with
+
+timestamp 41: another highlevel British visit to China
