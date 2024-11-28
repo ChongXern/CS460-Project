@@ -1,0 +1,9 @@
+{
+    "name": "8yO2FBBfaB0",
+    "url": "https://www.youtube.com/watch?v=8yO2FBBfaB0",
+    "audio_filepath": "audio_files/audio_8yO2FBBfaB0",
+    "spectrogram_filepath": "spectrograms/8yO2FBBfaB0.png",
+    "duration": 739,
+    "transitions": [41, 73, 158, 195, 219, 248, 276, 281, 303, 320, 332, 335, 345, 357, 364, 376, 386, 399, 433, 477, 499, 514, 522, 589, 691, 700, 710, 718],
+    "transcript_path": "transcripts/transcript_8yO2FBBfaB0.txt"
+}

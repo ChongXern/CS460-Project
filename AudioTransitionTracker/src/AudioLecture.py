@@ -6,27 +6,50 @@ import librosa.display
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-
-def get_audio_duration(y, sr):
-    return librosa.get_duration(y, sr)
+from youtube_transcript_api import YouTubeTranscriptApi
 
 class AudioLecture:
-    def __init__(self, name, url, audio_filepath, spectrogram_filepath, duration, transitions):
+    def __init__(self, name, url, audio_filepath, spectrogram_filepath, duration, transitions, transcript_path):
         self.name = name
         self.url = url
         self.audio_filepath = audio_filepath
         self.spectrogram_filepath = spectrogram_filepath
         self.duration = duration
         self.transitions = transitions  # List of (start_time, end_time) tuples
-
-    def add_transition(self, start_time, end_time):
-        self.transitions.append((start_time, end_time))
+        self.transcript_path = transcript_path
 
     def __repr__(self):
         return f"AudioLecture(name={self.name}, duration={self.duration} min, transitions={self.transitions})"
 
+    def extract_transcript(self, video_id):
+        filename = f"transcripts/transcript_{video_id}.txt"
+        open(filename, "w")
+        extracted_transcript = YouTubeTranscriptApi.get_transcript(video_id)
+        
+        transcript_lines = {}
+        
+        for entry in extracted_transcript:
+            start_time = math.floor(entry['start'])
+            text = entry['text']
+            
+            if start_time not in transcript_lines:
+                transcript_lines[start_time] = []
+            transcript_lines[start_time].append(text)
+        
+        with open(filename, "w") as f:
+            max_time = max(transcript_lines.keys())
+            for second in range(max_time + 1):
+                if second in transcript_lines:
+                    f.write("timestamp " + str(second) + ": ")
+                    f.write(" ".join(transcript_lines[second]) + "\n")
+                else:
+                    f.write("\n")
+        f.close()
+        
+        #self.transcript_path = filename
+        return filename
+    
     def to_json(self, json_filepath):
-        """Save the AudioLecture instance to a JSON file."""
         data = {
             'name': self.name,
             'url': self.url,
@@ -34,6 +57,7 @@ class AudioLecture:
             'spectrogram_filepath': self.spectrogram_filepath,
             'duration': self.duration,
             'transitions': [{'start_time': t[0], 'end_time': t[1]} for t in self.transitions],
+            'transcript_path': self.transcript_path
         }
         with open(json_filepath, 'w') as file:
             json.dump(data, file, indent=4)
@@ -85,7 +109,7 @@ class AudioLecture:
         plt.tight_layout()
         plt.savefig(output_image_path)
         plt.close()
-    
+
 def create_new_audio_lecture(video_url):
     output_dir = "audio_files"
     json_dir = "lectures"  # Directory to save JSON files
@@ -99,7 +123,7 @@ def create_new_audio_lecture(video_url):
 
     os.makedirs(spectrogram_dir, exist_ok=True)
     output_image_path = os.path.join(spectrogram_dir, f"{name}.png")
-
+    
     # Create AudioLecture instance
     audio_lecture = AudioLecture(
         name=name,
@@ -107,25 +131,29 @@ def create_new_audio_lecture(video_url):
         audio_filepath=audio_filepath,
         spectrogram_filepath=None,  # Placeholder for now
         duration=duration,
-        transitions=transitions
+        transitions=transitions,
+        transcript_path=None
     )
 
     audio_lecture.generate_spectrogram(f"{audio_filepath}.mp3", output_image_path)
     audio_lecture.spectrogram_filepath = output_image_path  # Update the spectrogram filepath
-
+    audio_lecture.extract_transcript(name)
+    
     os.makedirs(json_dir, exist_ok=True)
     json_path = os.path.join(json_dir, f"{name}.json")
     audio_lecture.to_json(json_path)
 
     print(audio_lecture)
 
+def segment_audio_lecture(audioLecture: AudioLecture, start_time, duration):
+    #should return new audioLecture
 
 def load_urls(filename):
     try:
         with open(filename, 'r') as file:
-            return {line.strip() for line in file}  # Use a set for fast lookup
+            return {line.strip() for line in file}
     except FileNotFoundError:
-        return set()  # Return an empty set if the file doesn't exist
+        return set()
 
 def save_url(filename, user_input):
     """Append a new input to the specified file."""
