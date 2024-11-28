@@ -145,7 +145,7 @@ def create_new_audio_lecture(video_url):
 
     print(audio_lecture)
 
-def segment_audio_lecture(audioLecture: AudioLecture, start_time, duration):
+#def segment_audio_lecture(audioLecture: AudioLecture, start_time, duration):
     #should return new audioLecture
 
 def load_urls(filename):
