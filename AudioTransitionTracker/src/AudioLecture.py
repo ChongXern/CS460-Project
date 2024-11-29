@@ -9,17 +9,18 @@ import math
 from youtube_transcript_api import YouTubeTranscriptApi
 
 class AudioLecture:
-    def __init__(self, name, url, audio_filepath, spectrogram_filepath, duration, transitions, transcript_path):
+    def __init__(self, name, url, audio_filepath, spectrogram_filepath, duration, fullstop_timestamps, transcript_path):
         self.name = name
         self.url = url
         self.audio_filepath = audio_filepath
         self.spectrogram_filepath = spectrogram_filepath
         self.duration = duration
-        self.transitions = transitions  # List of (start_time, end_time) tuples
+        self.fullstop_timestamps = fullstop_timestamps  # List of (start_time, end_time) tuples
         self.transcript_path = transcript_path
+        self.is_full = True
 
     def __repr__(self):
-        return f"AudioLecture(name={self.name}, duration={self.duration} min, transitions={self.transitions})"
+        return f"AudioLecture(name={self.name}, duration={self.duration} min, fullstop_timestamps={self.fullstop_timestamps})"
 
     def extract_transcript(self, video_id):
         filename = f"transcripts/transcript_{video_id}.txt"
@@ -56,8 +57,9 @@ class AudioLecture:
             'audio_filepath': self.audio_filepath,
             'spectrogram_filepath': self.spectrogram_filepath,
             'duration': self.duration,
-            'transitions': [{'start_time': t[0], 'end_time': t[1]} for t in self.transitions],
-            'transcript_path': self.transcript_path
+            'is_full': True,
+            'fullstop_timestamps': [{'start_time': t[0], 'end_time': t[1]} for t in self.fullstop_timestamps],
+            'transcript_path': self.transcript_path if self.transcript_path != None else None
         }
         with open(json_filepath, 'w') as file:
             json.dump(data, file, indent=4)
@@ -118,7 +120,7 @@ def create_new_audio_lecture(video_url):
     audio_filepath = AudioLecture.extract_audio_from_youtube(video_url, output_dir)
 
     duration = 0
-    transitions = []
+    fullstop_timestamps = []
     name = video_url.split('=')[-1]
 
     os.makedirs(spectrogram_dir, exist_ok=True)
@@ -131,7 +133,7 @@ def create_new_audio_lecture(video_url):
         audio_filepath=audio_filepath,
         spectrogram_filepath=None,  # Placeholder for now
         duration=duration,
-        transitions=transitions,
+        fullstop_timestamps=fullstop_timestamps,
         transcript_path=None
     )
 
@@ -145,8 +147,9 @@ def create_new_audio_lecture(video_url):
 
     print(audio_lecture)
 
-#def segment_audio_lecture(audioLecture: AudioLecture, start_time, duration):
+def segment_audio_lecture(audioLecture: AudioLecture, start_time, duration):
     #should return new audioLecture
+    
 
 def load_urls(filename):
     try:
