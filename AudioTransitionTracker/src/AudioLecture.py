@@ -15,6 +15,7 @@ class AudioLecture:
         self.audio_filepath = audio_filepath
         self.spectrogram_filepath = spectrogram_filepath
         self.duration = duration
+        self.is_full = True
         self.transitions = transitions  # List of (start_time, end_time) tuples
         self.transcript_path = transcript_path
 
@@ -56,6 +57,7 @@ class AudioLecture:
             'audio_filepath': self.audio_filepath,
             'spectrogram_filepath': self.spectrogram_filepath,
             'duration': self.duration,
+            'is_full': True,
             'transitions': [{'start_time': t[0], 'end_time': t[1]} for t in self.transitions],
             'transcript_path': self.transcript_path
         }
