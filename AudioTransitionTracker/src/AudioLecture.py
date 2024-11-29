@@ -18,6 +18,7 @@ class AudioLecture:
         self.fullstop_timestamps = fullstop_timestamps  # List of (start_time, end_time) tuples
         self.transcript_path = transcript_path
         self.is_full = True
+        self.start_time = 0
 
     def __repr__(self):
         return f"AudioLecture(name={self.name}, duration={self.duration} min, fullstop_timestamps={self.fullstop_timestamps})"
@@ -56,6 +57,7 @@ class AudioLecture:
             'url': self.url,
             'audio_filepath': self.audio_filepath,
             'spectrogram_filepath': self.spectrogram_filepath,
+            'start_time': 0,
             'duration': self.duration,
             'is_full': True,
             'fullstop_timestamps': [{'start_time': t[0], 'end_time': t[1]} for t in self.fullstop_timestamps],
@@ -147,7 +149,7 @@ def create_new_audio_lecture(video_url):
 
     print(audio_lecture)
 
-def segment_audio_lecture(audioLecture: AudioLecture, start_time, duration):
+#def segment_audio_lecture(audioLecture: AudioLecture, start_time, duration):
     #should return new audioLecture
     
 

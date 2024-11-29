@@ -3,6 +3,7 @@
     "url": "https://www.youtube.com/watch?v=PujjqfUhtNo",
     "audio_filepath": "audio_files/audio_PujjqfUhtNo",
     "spectrogram_filepath": "spectrograms/PujjqfUhtNo.png",
+    "start_time": 0,
     "duration": 465,
     "is_full": true,
     "fullstop_timestamps": [

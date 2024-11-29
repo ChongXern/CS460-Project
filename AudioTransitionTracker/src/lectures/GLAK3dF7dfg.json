@@ -3,6 +3,7 @@
     "url": "https://www.youtube.com/watch?v=GLAK3dF7dfg",
     "audio_filepath": "audio_files/audio_GLAK3dF7dfg",
     "spectrogram_filepath": "spectrograms/GLAK3dF7dfg.png",
+    "start_time": 0,
     "duration": 467,
     "is_full": true,
     "fullstop_timestamps": [
