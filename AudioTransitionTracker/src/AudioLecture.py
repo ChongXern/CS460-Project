@@ -28,9 +28,9 @@ class AudioLecture:
             'url': self.url,
             'audio_filepath': self.audio_filepath,
             'spectrogram_filepath': self.spectrogram_filepath,
-            'start_time': 0,
+            'start_time': self.start_time,
             'duration': self.duration,
-            'is_full': True,
+            'is_full': self.is_full,
             'fullstop_timestamps': self.fullstop_timestamps
         }
         with open(json_filepath, 'w') as file:
@@ -70,7 +70,7 @@ class AudioLecture:
         spectrogram_filepath = output_image_path
         open(spectrogram_filepath, "w").close()
         y, sr = librosa.load(audio_filepath)
-        #self.duration = librosa.get_duration(y=y, sr=sr)
+        #print(f"waveform: {y} & sampling rate: {sr}")
         if self.is_full:
             self.duration = math.floor(librosa.get_duration(y=y, sr=sr))
         else:
@@ -86,9 +86,10 @@ class AudioLecture:
 
         # Plotting the spectrogram
         plt.figure(figsize=(10, 4))
-        librosa.display.specshow(S_db, sr=sr, x_axis='time', y_axis='log', cmap='coolwarm')
+        time_axis = np.linspace(start_time, start_time + self.duration, S_db.shape[-1])
+        librosa.display.specshow(S_db, sr=sr, x_axis='time', y_axis='log', cmap='coolwarm', x_coords=time_axis)
         plt.colorbar(format='%+2.0f dB')
-        plt.title('Spectrogram')
+        plt.title(f'Spectrogram for {self.name}')
         plt.tight_layout()
         plt.savefig(output_image_path)
         plt.close()
@@ -161,7 +162,7 @@ def segment_audio_lecture(audioLecture: AudioLecture, start_time, duration):
     
     # segment timestamp array based on start time and end time
     start_time_s = convert_timestamp_to_seconds(start_time)
-    duration_s = convert_timestamp_to_seconds( duration)
+    duration_s = convert_timestamp_to_seconds(duration)
     fullstop_timestamps = data["fullstop_timestamps"]
     new_timestamps_array = []
     
