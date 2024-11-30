@@ -6,11 +6,10 @@ import librosa.display
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled
 import copy
 
 class AudioLecture:
-    def __init__(self, name, url, audio_filepath, spectrogram_filepath, duration, fullstop_timestamps, transcript_path, start_time=0, is_full=True):
+    def __init__(self, name, url, audio_filepath, spectrogram_filepath, duration, fullstop_timestamps, start_time=0, is_full=True):
         self.name = name
         self.url = url
         self.audio_filepath = audio_filepath
@@ -18,42 +17,10 @@ class AudioLecture:
         self.start_time = start_time
         self.duration = duration
         self.fullstop_timestamps = fullstop_timestamps
-        self.transcript_path = transcript_path
         self.is_full = is_full
 
     def __repr__(self):
         return f"AudioLecture(name={self.name}, duration={self.duration} min, fullstop_timestamps={self.fullstop_timestamps})"
-
-    def extract_transcript(self, video_id):
-        filename = f"transcripts/transcript_{video_id}.txt"
-        open(filename, "w")
-        try:
-            extracted_transcript = YouTubeTranscriptApi.get_transcript(video_id)
-        except TranscriptsDisabled:
-            return ""
-        
-        transcript_lines = {}
-        
-        for entry in extracted_transcript:
-            start_time = math.floor(entry['start'])
-            text = entry['text']
-            
-            if start_time not in transcript_lines:
-                transcript_lines[start_time] = []
-            transcript_lines[start_time].append(text)
-        
-        with open(filename, "w") as f:
-            max_time = max(transcript_lines.keys())
-            for second in range(max_time + 1):
-                if second in transcript_lines:
-                    f.write("timestamp " + str(second) + ": ")
-                    f.write(" ".join(transcript_lines[second]) + "\n")
-                else:
-                    f.write("\n")
-        f.close()
-        
-        #self.transcript_path = filename
-        return filename
     
     def to_json(self, json_filepath):
         data = {
@@ -64,8 +31,7 @@ class AudioLecture:
             'start_time': 0,
             'duration': self.duration,
             'is_full': True,
-            'fullstop_timestamps': self.fullstop_timestamps,
-            'transcript_path': self.transcript_path if self.transcript_path != None else None
+            'fullstop_timestamps': self.fullstop_timestamps
         }
         with open(json_filepath, 'w') as file:
             json.dump(data, file, indent=4)
@@ -148,13 +114,11 @@ def create_new_audio_lecture(video_url):
         audio_filepath=audio_filepath,
         spectrogram_filepath=None,  # Placeholder for now
         duration=duration,
-        fullstop_timestamps=fullstop_timestamps,
-        transcript_path=None
+        fullstop_timestamps=fullstop_timestamps
     )
 
     audio_lecture.generate_spectrogram(f"{audio_filepath}.mp3", output_image_path)
     audio_lecture.spectrogram_filepath = output_image_path  # Update the spectrogram filepath
-    audio_lecture.extract_transcript(name)
     
     os.makedirs(json_dir, exist_ok=True)
     json_path = os.path.join(json_dir, f"{name}.json")
@@ -180,7 +144,6 @@ def parse_audio_lecture_from_json(json_filepath):
         start_time = data["start_time"],
         duration = data["duration"],
         fullstop_timestamps = data["fullstop_timestamps"],
-        transcript_path = data["transcript_path"],
         is_full = data["is_full"]
     )
     
