@@ -1,6 +1,6 @@
 import json
 import math
-#from AudioLecture import convert_timestamp_to_ms
+from utils import convert_timestamp_to_ms
 
 def convert_timestamps_in_json(json_filepath):
     with open(json_filepath, 'r') as file:
@@ -12,7 +12,10 @@ def convert_timestamps_in_json(json_filepath):
     for i in range(len(data["fullstop_timestamps"])):
         # Parse timestamp from decimal into seconds
         timestamp = data["fullstop_timestamps"][i]
-        data["fullstop_timestamps"][i] = convert_timestamp_to_seconds(timestamp)
+        data["fullstop_timestamps"][i] = convert_timestamp_to_ms(timestamp)
+    
+    data["start_time"] *= 1000
+    data["duration"] *= 1000
     
     with open(json_filepath, 'w') as file:
         json.dump(data, file, ensure_ascii=False, indent=4)
@@ -35,7 +38,8 @@ def check_valid(json_filepath):
 json_filepath = input("INPUT JSON FILE: ")
 mode = input("Check order? ")
 if mode.lower() == 'y':
-    is_in_order = check_valid(f"lectures/{json_filepath}.json")
+    is_in_order = check_valid(f"json_lectures/{json_filepath}.json")
     print(f"Is timestamp array ascending? {is_in_order}")
 if is_in_order:
-    convert_timestamps_in_json(f"lectures/{json_filepath}.json")
+    convert_timestamps_in_json(f"json_lectures/{json_filepath}.json")
+    
