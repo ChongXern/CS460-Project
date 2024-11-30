@@ -127,10 +127,10 @@ def create_new_audio_lecture(video_url):
 
     print(audio_lecture)
 
-def convert_timestamp_to_seconds(timestamp):
+def convert_timestamp_to_ms(timestamp):
     minute = math.floor(timestamp)
     second = 100 * (timestamp - minute)
-    return math.ceil(minute * 60 + second)
+    return math.ceil(minute * 60 + second) * 1000
 
 def parse_audio_lecture_from_json(json_filepath):
     with open(json_filepath, 'r') as file:
@@ -161,20 +161,20 @@ def segment_audio_lecture(audioLecture: AudioLecture, start_time, duration):
     new_audio_lecture = copy.copy(audioLecture)
     
     # segment timestamp array based on start time and end time
-    start_time_s = convert_timestamp_to_seconds(start_time)
-    duration_s = convert_timestamp_to_seconds(duration)
+    start_time_ms = convert_timestamp_to_ms(start_time)
+    duration_ms = convert_timestamp_to_ms(duration)
     fullstop_timestamps = data["fullstop_timestamps"]
     new_timestamps_array = []
     
     for timestamp in fullstop_timestamps:
-        if timestamp >= start_time_s + duration_s:
+        if timestamp >= start_time_ms + duration_ms:
             break
-        if timestamp + 2 > start_time_s:
+        if timestamp + 2 > start_time_ms:
             new_timestamps_array.append(timestamp)
     
     new_audio_lecture.name = f"{name}_{str(start_time)}_{str(start_time + duration)}"
-    new_audio_lecture.start_time = start_time_s
-    new_audio_lecture.duration = duration_s
+    new_audio_lecture.start_time = start_time_ms
+    new_audio_lecture.duration = duration_ms
     new_audio_lecture.is_full = False
     new_audio_lecture.generate_spectrogram(f"{audioLecture.audio_filepath}.mp3", f"lectures_segments/spectrograms/{new_audio_lecture.name}.png")
     new_audio_lecture.fullstop_timestamps = new_timestamps_array

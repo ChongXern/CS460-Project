@@ -1,6 +1,6 @@
 import json
 import math
-from AudioLecture import convert_timestamp_to_seconds
+#from AudioLecture import convert_timestamp_to_ms
 
 def convert_timestamps_in_json(json_filepath):
     with open(json_filepath, 'r') as file:
