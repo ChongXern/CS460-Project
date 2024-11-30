@@ -6,19 +6,20 @@ import librosa.display
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled
+import copy
 
 class AudioLecture:
-    def __init__(self, name, url, audio_filepath, spectrogram_filepath, duration, fullstop_timestamps, transcript_path):
+    def __init__(self, name, url, audio_filepath, spectrogram_filepath, duration, fullstop_timestamps, transcript_path, start_time=0, is_full=True):
         self.name = name
         self.url = url
         self.audio_filepath = audio_filepath
         self.spectrogram_filepath = spectrogram_filepath
+        self.start_time = start_time
         self.duration = duration
-        self.fullstop_timestamps = fullstop_timestamps  # List of (start_time, end_time) tuples
+        self.fullstop_timestamps = fullstop_timestamps
         self.transcript_path = transcript_path
-        self.is_full = True
-        self.start_time = 0
+        self.is_full = is_full
 
     def __repr__(self):
         return f"AudioLecture(name={self.name}, duration={self.duration} min, fullstop_timestamps={self.fullstop_timestamps})"
@@ -92,15 +93,24 @@ class AudioLecture:
         print(f"Audio saved to {output_path}")
         return output_path
 
-    def generate_spectrogram(self, audio_filepath, output_image_path, start_time=0):
+    def generate_spectrogram(self, audio_filepath, output_image_path):
+        #differentiating attributes for full or segment
+        start_time = self.start_time
+        duration = self.duration
+        
         spectrogram_filepath = output_image_path
         open(spectrogram_filepath, "w").close()
         y, sr = librosa.load(audio_filepath)
         #self.duration = librosa.get_duration(y=y, sr=sr)
-        self.duration = math.floor(librosa.get_duration(y=y, sr=sr))
-
-        #start_sample = int(sr * start_time)
-        #end_sample = int(sr * (start_time + duration))
+        if self.is_full:
+            self.duration = math.floor(librosa.get_duration(y=y, sr=sr))
+        else:
+            start_sample = int(start_time * sr)
+            end_sample = int((start_time + duration) * sr)
+            if end_sample > len(y):
+                end_sample = len(y)
+            y = y[start_sample:end_sample]
+            self.duration = duration
         
         D = librosa.stft(y)
         S_db = librosa.amplitude_to_db(abs(D), ref=np.max)
