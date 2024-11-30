@@ -1,0 +1,467 @@
+timestamp 0: in this video we're gonna look at what
+
+timestamp 2: data mining is and we're gonna introduce
+
+timestamp 4: some fundamental concepts we need to
+
+timestamp 6: understand how it works
+
+timestamp 8: informally you can think of data mining
+
+timestamp 10: as the process of using a computer
+
+timestamp 12: program an algorithm to find patterns or
+
+
+
+timestamp 16: relationships in your data for example
+
+
+timestamp 19: you might want to be looking for what
+timestamp 20: combinations of symptoms will allow you
+
+
+timestamp 23: to reliably diagnose a patient another
+
+
+timestamp 26: example of data mining if you are
+
+timestamp 28: someone who is running a store you might
+
+
+timestamp 31: want to know what types of products
+
+timestamp 33: customers tend to purchase together at
+
+
+timestamp 36: the heart of the data mining process is
+
+timestamp 38: some type of machine learning in which
+
+
+timestamp 41: we apply an algorithm it learns
+
+timestamp 43: something about the data and these are
+
+
+timestamp 46: called machine learning algorithms
+
+timestamp 48: ultimately we're going to look at three
+
+timestamp 50: different types of machine learning in
+
+timestamp 52: this class but for now we're primarily
+
+timestamp 54: going to focus on classification
+
+timestamp 56: learning so in classification learning
+
+
+timestamp 59: we're trying to figure out how to
+
+
+timestamp 62: classify objects or entities on the
+
+
+
+timestamp 66: basis of their characteristics so maybe
+
+
+timestamp 69: you know a bunch of information about a
+
+timestamp 71: customer of your store or potential
+
+
+
+timestamp 75: customer and you're wondering whether
+
+timestamp 77: that customer is likely to buy a
+timestamp 78: computer in the course of the next year
+
+
+timestamp 81: you just want to be able to have a
+
+timestamp 83: pretty good idea yes they are going to
+
+timestamp 85: buy it no they are not going to buy it
+
+timestamp 87: and so what you need to do in order to
+
+
+timestamp 90: perform classification learning is you
+
+
+timestamp 93: need to have what is called training
+
+timestamp 95: data a set of training examples where
+
+
+
+timestamp 99: each example is a single customer in
+
+
+timestamp 102: this case and we have a bunch of
+
+timestamp 104: information about the customer we have
+
+timestamp 106: the customers ID agender the age whether
+
+
+
+
+timestamp 111: the customer is a student what the
+
+
+timestamp 114: customers credit rating is good fair
+
+
+timestamp 117: excellent
+
+timestamp 119: and then this is the important part we
+
+timestamp 121: already have classified each of these
+
+
+timestamp 124: examples we already know whether the
+
+
+timestamp 127: customer bought a computer or not
+
+
+
+timestamp 131: and the idea then is that the algorithm
+
+timestamp 133: is going to take this training data and
+
+timestamp 135: produce a model of some type that we can
+
+
+
+timestamp 139: then use to classify new examples to
+
+
+
+timestamp 143: predict in this case whether a new
+
+timestamp 145: customer will buy a computer in the next
+
+
+
+timestamp 149: year one possible model you could learn
+
+
+timestamp 152: from these training examples and by the
+
+timestamp 154: way I've only shown you five customers
+
+timestamp 156: you want as much training data as you
+
+timestamp 158: possibly can get but one possible model
+
+
+timestamp 161: that might be produced is what is known
+
+timestamp 163: as a decision tree and this is based on
+
+
+
+timestamp 167: our training data the actual process of
+
+timestamp 169: finding the tree determining the treaty
+
+
+timestamp 172: is something we're going to get into
+timestamp 173: later but once we have learned the model
+
+
+timestamp 176: from the training data we're then able
+
+timestamp 178: to use it to classify new examples so
+
+
+timestamp 181: here I have two new customers I know the
+
+
+timestamp 184: same information about them as before
+
+timestamp 186: except I do not yet have a
+
+
+timestamp 189: classification for them I don't know
+
+timestamp 191: whether they're going to buy a computer
+timestamp 192: and that's what I want to be able to
+
+timestamp 194: predict so to apply my decision tree I'm
+
+
+timestamp 197: going to start at the top and work my
+
+
+timestamp 200: way down so if we focus first on the
+
+
+timestamp 203: first customer ID 333 you can see we're
+
+
+
+timestamp 207: being told to look first at her age and
+
+timestamp 209: you can see that she's 68 and as a
+
+
+timestamp 212: result we're going to go down the branch
+
+
+timestamp 215: that is labeled greater than 65 because
+
+
+
+timestamp 219: her age is greater than 65 we go down
+
+
+timestamp 222: that branch that brings us to the next
+
+timestamp 224: thing that we should look at which is
+
+timestamp 226: her credit rating and because her credit
+
+
+timestamp 229: rating is fair we're going to go down
+
+timestamp 231: that branch and that brings us to a box
+
+
+timestamp 234: with a classification and in this case
+
+
+timestamp 237: that box tells us that no we should not
+
+
+timestamp 240: expect her to buy a computer that's our
+
+
+timestamp 243: prediction for that customer let's go to
+
+
+timestamp 246: our next customer we again start at the
+
+
+timestamp 249: top this customer's age is 23 so we go
+
+
+timestamp 252: down this branch which is the less than
+
+timestamp 254: 35 branch by the way notice there's a
+
+
+timestamp 257: middle branch here for customers whose
+
+timestamp 259: ages are between 35 and 65 but in this
+
+
+timestamp 262: case we're going down this branch
+
+timestamp 264: that then tells us to look next at
+
+
+timestamp 267: whether the customer is a student and in
+
+
+timestamp 270: this case the customer is a student so
+
+
+timestamp 273: we go down the yes branch and that
+
+timestamp 275: brings us to our classification for that
+
+timestamp 277: customer which is yes we predict that he
+
+
+
+timestamp 281: will buy a computer in the next year now
+
+
+timestamp 284: when we're talking about our training
+timestamp 285: data every row is referred to as an
+
+timestamp 287: example or an instance every column is
+
+
+
+timestamp 291: referred to as an attribute and we can
+
+
+timestamp 294: divide up those attributes into two
+
+timestamp 296: types the output attribute is the one
+
+timestamp 298: that we're trying to be able to predict
+
+
+timestamp 301: that's our classification column
+
+timestamp 303: everything else is an input attribute
+
+
+timestamp 306: the model that we learn takes the values
+
+
+timestamp 309: of the input attributes and gives us a
+
+
+timestamp 312: value for the output attribute in the
+
+timestamp 314: case of our decision tree it took the
+
+
+timestamp 317: values of the age student and credit
+
+timestamp 319: rating columns and it gave us a
+
+
+timestamp 322: prediction for whether the user would
+timestamp 323: buy a computer my computer was our
+
+
+timestamp 326: output now another way to distinguish
+
+
+timestamp 329: between the attributes is on whether
+
+timestamp 331: they are nominal or numeric nominal
+
+
+
+timestamp 335: attributes have values that are
+
+timestamp 337: essentially names of categories in this
+
+
+timestamp 340: case most of the attributes are nominal
+
+
+timestamp 343: gender student credit rating and buying
+
+
+
+timestamp 347: computer numeric attributes as you might
+
+timestamp 349: expect have values that are numbers but
+
+
+
+timestamp 353: what's especially important here is it
+timestamp 354: has to make sense to compare those
+
+timestamp 356: numbers using greater than and less net
+
+
+
+timestamp 360: so for example in our model we were
+
+
+timestamp 363: basing our predictions in part on things
+
+
+timestamp 366: like was the age less than 35 and that
+
+
+
+timestamp 370: kind of comparison makes sense because
+timestamp 371: it does make sense to say whether
+
+
+timestamp 374: someone is less than 35 and that might
+
+timestamp 376: have an impact on your predictions but
+
+
+timestamp 379: for something like ID even though the
+
+
+timestamp 382: values are numbers that's not truly
+
+
+timestamp 385: numeric because it wouldn't make sense
+
+timestamp 387: to base your prediction on something
+
+timestamp 389: like whether the ID was less than 300 it
+
+
+timestamp 392: doesn't give us useful information about
+
+timestamp 394: the person in order for us to apply
+
+
+timestamp 397: classification
+timestamp 398: learning we have to have a single output
+
+timestamp 400: attribute whose value we're trying to
+
+
+timestamp 403: determine so in our case we did and then
+
+
+timestamp 406: the other thing that made this
+timestamp 407: classification learning is that that
+
+timestamp 409: single output attribute is nominal for
+
+
+timestamp 412: classification learning that has to be
+
+
+timestamp 415: the case the thing you're trying to
+timestamp 416: predict has to be a nominal attribute
+
+
+timestamp 419: and the input attributes can be either
+
+
+timestamp 422: nominal or numeric there's no
+timestamp 423: restriction there now let's imagine we
+
+
+timestamp 426: change the problem so instead of
+
+timestamp 428: predicting yes or no we're trying to
+
+timestamp 430: predict a probability that the computer
+
+timestamp 432: will be bought by the customer in the
+
+timestamp 434: next year well now our output attribute
+
+
+timestamp 437: is numeric and therefore it can't be
+
+
+timestamp 440: classification learning anymore instead
+
+timestamp 442: it's now numeric estimation and this has
+
+
+timestamp 445: a completely different set of algorithms
+
+timestamp 447: and it produces different types of
+
+timestamp 449: models and we'll talk more about this
+
+
+timestamp 452: later on it's worth noting that here
+
+timestamp 454: again the input attributes can be either
+
+timestamp 456: nominal or numeric what matters is that
+
+
+timestamp 459: the output attribute is numeric and if
+
+
+timestamp 462: it is you have to do in America
+
+timestamp 464: estimation instead of classification
+
+timestamp 466: learning
