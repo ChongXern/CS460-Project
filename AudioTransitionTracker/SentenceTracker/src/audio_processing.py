@@ -8,9 +8,9 @@ from audio_lecture import AudioLecture
 from utils import convert_timestamp_to_ms
 
 def create_new_audio_lecture(video_url):
-    output_dir = "audio_files"
-    json_dir = "json_lectures"
-    spectrogram_dir = "spectrograms"
+    output_dir = "../../data/audio_files"
+    json_dir = "../../data/json_lectures"
+    spectrogram_dir = "../../data/spectrograms"
 
     audio_filepath = AudioLecture.extract_audio_from_youtube(video_url, output_dir)
 
@@ -62,7 +62,7 @@ def parse_audio_lecture_from_json(json_filepath):
 def segment_audio_lecture(audiolec: AudioLecture, start_time, duration, is_play=False):
     #should return new audioLecture
     name = audiolec.name
-    json_file = f"json_lectures/{name}.json"
+    json_file = f"../../data/json_lectures/{name}.json"
     with open(json_file, 'r') as file:
         data = json.load(file)
     
@@ -86,12 +86,12 @@ def segment_audio_lecture(audiolec: AudioLecture, start_time, duration, is_play=
     new_audio_lecture.start_time = start_time_ms
     new_audio_lecture.duration = duration_ms
     print(f"new audio lecture duration: {new_audio_lecture.duration}")
-    new_audio_lecture.generate_spectrogram(f"{audiolec.audio_filepath}.mp3", f"lectures_segments/spectrograms/{new_audio_lecture.name}.png")
+    new_audio_lecture.generate_spectrogram(f"{audiolec.audio_filepath}.mp3", f"../../data/lectures_segments/spectrograms/{new_audio_lecture.name}.png")
     new_audio_lecture.fullstop_timestamps = new_timestamps_array
     new_audio_lecture.duration = duration_ms #reset duration_ms, figure smth out
     
     #create json file
-    new_audio_lecture.to_json(f"lectures_segments/json/{new_audio_lecture.name}.json")
+    new_audio_lecture.to_json(f"../../data/lectures_segments/json/{new_audio_lecture.name}.json")
     print("Segmented audio lecture")
     
     if is_play:

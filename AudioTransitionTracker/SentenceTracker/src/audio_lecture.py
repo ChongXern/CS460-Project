@@ -69,7 +69,7 @@ class AudioLecture:
         if start_time > 1000 or duration > 1000: #convert ms to s
             start_time /= 1000
             duration /= 1000
-                
+
         spectrogram_filepath = output_image_path
         open(spectrogram_filepath, "w").close()
         y, sr = librosa.load(audio_filepath)

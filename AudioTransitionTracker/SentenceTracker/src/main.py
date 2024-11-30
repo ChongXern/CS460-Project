@@ -14,7 +14,7 @@ if __name__ == "__main__":
             save_url("urls.txt", video_url)
             print("URL saved, converting to AudioLecture")
     elif mode.lower == 's' or mode.lower == 'segment':
-        json_file = "json_lectures/4PkKI_S9TIQ.json"
+        json_file = "../../data/json_lectures/4PkKI_S9TIQ.json"
         audioLecture = parse_audio_lecture_from_json(json_file)
         segment_audio_lecture(audioLecture, 2, 2)
     elif mode.lower == 'q':

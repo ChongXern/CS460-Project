@@ -38,8 +38,8 @@ def check_valid(json_filepath):
 json_filepath = input("INPUT JSON FILE: ")
 mode = input("Check order? ")
 if mode.lower() == 'y':
-    is_in_order = check_valid(f"json_lectures/{json_filepath}.json")
+    is_in_order = check_valid(f"../../data/json_lectures/{json_filepath}.json")
     print(f"Is timestamp array ascending? {is_in_order}")
 if is_in_order:
-    convert_timestamps_in_json(f"json_lectures/{json_filepath}.json")
+    convert_timestamps_in_json(f"../../data/json_lectures/{json_filepath}.json")
     
