@@ -27,7 +27,10 @@ class AudioLecture:
     def extract_transcript(self, video_id):
         filename = f"transcripts/transcript_{video_id}.txt"
         open(filename, "w")
-        extracted_transcript = YouTubeTranscriptApi.get_transcript(video_id)
+        try:
+            extracted_transcript = YouTubeTranscriptApi.get_transcript(video_id)
+        except TranscriptsDisabled:
+            return ""
         
         transcript_lines = {}
         
@@ -160,6 +163,10 @@ def create_new_audio_lecture(video_url):
     print(audio_lecture)
 
 #def segment_audio_lecture(audioLecture: AudioLecture, start_time, duration):
+def convert_timestamp_to_seconds(timestamp):
+    minute = math.floor(timestamp)
+    second = 100 * (timestamp - minute)
+    return math.ceil(minute * 60 + second)
     #should return new audioLecture
     
 

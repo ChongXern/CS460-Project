@@ -1,5 +1,6 @@
 import json
 import math
+from AudioLecture import convert_timestamp_to_seconds
 
 def convert_timestamps_in_json(json_filepath):
     with open(json_filepath, 'r') as file:
@@ -11,10 +12,7 @@ def convert_timestamps_in_json(json_filepath):
     for i in range(len(data["fullstop_timestamps"])):
         # Parse timestamp from decimal into seconds
         timestamp = data["fullstop_timestamps"][i]
-        minute = math.floor(timestamp)
-        second = 100 * (timestamp - minute)
-        new_timestamp = math.ceil(minute * 60 + second)
-        data["fullstop_timestamps"][i] = new_timestamp
+        data["fullstop_timestamps"][i] = convert_timestamp_to_seconds(timestamp)
     
     with open(json_filepath, 'w') as file:
         json.dump(data, file, ensure_ascii=False, indent=4)
