@@ -1,10 +1,10 @@
 {
-    "name": "4PkKI_S9TIQ_2_3",
+    "name": "4PkKI_S9TIQ_2_4",
     "url": "https://www.youtube.com/watch?v=4PkKI_S9TIQ",
     "audio_filepath": "audio_files/audio_4PkKI_S9TIQ",
     "spectrogram_filepath": "spectrograms/4PkKI_S9TIQ.png",
     "start_time": 120000,
-    "duration": 60000,
+    "duration": 120000,
     "is_full": false,
     "fullstop_timestamps": [
         123000,
@@ -14,6 +14,12 @@
         147000,
         164000,
         173000,
-        179000
+        179000,
+        187000,
+        195000,
+        203000,
+        214000,
+        228000,
+        235000
     ]
 }

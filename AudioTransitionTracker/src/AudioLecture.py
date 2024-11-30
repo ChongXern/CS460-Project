@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 import copy
+from pydub import AudioSegment
+from pydub.playback import play
 
 class AudioLecture:
     def __init__(self, name, url, audio_filepath, spectrogram_filepath, duration, fullstop_timestamps, start_time=0, is_full=True):
@@ -33,6 +35,7 @@ class AudioLecture:
             'is_full': self.is_full,
             'fullstop_timestamps': self.fullstop_timestamps
         }
+        print(f"new audio lecture duration: {data['duration']}"),
         with open(json_filepath, 'w') as file:
             json.dump(data, file, indent=4)
         print(f"JSON saved to {json_filepath}")
@@ -66,7 +69,10 @@ class AudioLecture:
         #differentiating attributes for full or segment
         start_time = self.start_time
         duration = self.duration
-        
+        if start_time > 1000 or duration > 1000: #convert ms to s
+            start_time /= 1000
+            duration /= 1000
+                
         spectrogram_filepath = output_image_path
         open(spectrogram_filepath, "w").close()
         y, sr = librosa.load(audio_filepath)
@@ -112,7 +118,7 @@ def create_new_audio_lecture(video_url):
     audio_lecture = AudioLecture(
         name=name,
         url=video_url,
-        audio_filepath=audio_filepath,
+        audio_filepath=f"{audio_filepath}.mp3",
         spectrogram_filepath=None,  # Placeholder for now
         duration=duration,
         fullstop_timestamps=fullstop_timestamps
@@ -151,14 +157,14 @@ def parse_audio_lecture_from_json(json_filepath):
     return parsed_audio_lecture
 
 #assume start_time is in decimals
-def segment_audio_lecture(audioLecture: AudioLecture, start_time, duration):
+def segment_audio_lecture(audiolec: AudioLecture, start_time, duration, is_play=False):
     #should return new audioLecture
-    name = audioLecture.name
+    name = audiolec.name
     json_file = f"json_lectures/{name}.json"
     with open(json_file, 'r') as file:
         data = json.load(file)
     
-    new_audio_lecture = copy.copy(audioLecture)
+    new_audio_lecture = copy.copy(audiolec)
     
     # segment timestamp array based on start time and end time
     start_time_ms = convert_timestamp_to_ms(start_time)
@@ -170,18 +176,28 @@ def segment_audio_lecture(audioLecture: AudioLecture, start_time, duration):
         if timestamp >= start_time_ms + duration_ms:
             break
         if timestamp + 2 > start_time_ms:
+            #new_timestamps_array.append(timestamp - start_time_ms)
             new_timestamps_array.append(timestamp)
     
     new_audio_lecture.name = f"{name}_{str(start_time)}_{str(start_time + duration)}"
+    new_audio_lecture.is_full = False
     new_audio_lecture.start_time = start_time_ms
     new_audio_lecture.duration = duration_ms
-    new_audio_lecture.is_full = False
-    new_audio_lecture.generate_spectrogram(f"{audioLecture.audio_filepath}.mp3", f"lectures_segments/spectrograms/{new_audio_lecture.name}.png")
+    print(f"new audio lecture duration: {new_audio_lecture.duration}")
+    new_audio_lecture.generate_spectrogram(f"{audiolec.audio_filepath}.mp3", f"lectures_segments/spectrograms/{new_audio_lecture.name}.png")
     new_audio_lecture.fullstop_timestamps = new_timestamps_array
+    new_audio_lecture.duration = duration_ms #reset duration_ms, figure smth out
     
     #create json file
     new_audio_lecture.to_json(f"lectures_segments/json/{new_audio_lecture.name}.json")
     print("Segmented audio lecture")
+    
+    if is_play:
+        #audio_file = audiolec.audio_filepath
+        audio_file = audiolec.audio_filepath if audiolec.audio_filepath.endswith(".mp3") else f"{audiolec.audio_filepath}.mp3"
+        audio = AudioSegment.from_file(audio_file)
+        segment = audio[start_time_ms:start_time_ms+duration_ms]
+        play(segment)
 
 def load_urls(filename):
     try:
@@ -208,5 +224,5 @@ if __name__ == "__main2__":
 else:
     json_file = "json_lectures/4PkKI_S9TIQ.json"
     audioLecture = parse_audio_lecture_from_json(json_file)
-    segment_audio_lecture(audioLecture, 2, 1)
+    segment_audio_lecture(audioLecture, 2, 2)
     #audioLecture.generate_spectrogram("audio_files/audio_4PkKI_S9TIQ.mp3", "lectures_segments/spectrograms/4PkKI_S9TIQ.png")
