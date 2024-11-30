@@ -4,7 +4,7 @@
     "audio_filepath": "audio_files/audio_PujjqfUhtNo",
     "spectrogram_filepath": "spectrograms/PujjqfUhtNo.png",
     "start_time": 0,
-    "duration": 465,
+    "duration": 465000,
     "is_full": true,
     "fullstop_timestamps": [
         8000,

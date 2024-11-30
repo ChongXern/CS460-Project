@@ -4,7 +4,7 @@
     "audio_filepath": "audio_files/audio_RrZ8-1w7iok",
     "spectrogram_filepath": "spectrograms/RrZ8-1w7iok.png",
     "start_time": 0,
-    "duration": 407,
+    "duration": 407000,
     "is_full": true,
     "fullstop_timestamps": [
         10000,

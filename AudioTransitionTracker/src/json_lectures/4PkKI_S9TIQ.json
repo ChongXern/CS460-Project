@@ -4,7 +4,7 @@
     "audio_filepath": "audio_files/audio_4PkKI_S9TIQ",
     "spectrogram_filepath": "spectrograms/4PkKI_S9TIQ.png",
     "start_time": 0,
-    "duration": 388,
+    "duration": 388000,
     "is_full": true,
     "fullstop_timestamps": [
         12000,

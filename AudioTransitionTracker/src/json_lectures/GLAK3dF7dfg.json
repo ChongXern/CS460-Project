@@ -4,7 +4,7 @@
     "audio_filepath": "audio_files/audio_GLAK3dF7dfg",
     "spectrogram_filepath": "spectrograms/GLAK3dF7dfg.png",
     "start_time": 0,
-    "duration": 467,
+    "duration": 467000,
     "is_full": true,
     "fullstop_timestamps": [
         8000,
