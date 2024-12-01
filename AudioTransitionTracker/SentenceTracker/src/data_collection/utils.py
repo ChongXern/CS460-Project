@@ -16,3 +16,6 @@ def save_url(filename, user_input):
     """Append a new input to the specified file."""
     with open(filename, 'a') as file:
         file.write(user_input + '\n')
+
+def extract_id_from_url(video_url):
+    return video_url.split('=')[-1]

@@ -5,7 +5,7 @@ from pydub import AudioSegment
 from pydub.playback import play
 
 from audio_lecture import AudioLecture
-from utils import convert_timestamp_to_ms
+from utils import extract_id_from_url, convert_timestamp_to_ms
 
 def create_new_audio_lecture(video_url):
     output_dir = "../../data/audio_files"
@@ -16,7 +16,7 @@ def create_new_audio_lecture(video_url):
 
     duration = 0
     fullstop_timestamps = []
-    name = video_url.split('=')[-1]
+    name = extract_id_from_url(video_url)
 
     os.makedirs(spectrogram_dir, exist_ok=True)
     output_image_path = os.path.join(spectrogram_dir, f"{name}.png")
@@ -43,7 +43,6 @@ def create_new_audio_lecture(video_url):
 def parse_audio_lecture_from_json(json_filepath):
     with open(json_filepath, 'r') as file:
         data = json.load(file)
-    
     # create parsed audiolecture object
     parsed_audio_lecture = AudioLecture(
         name = data["name"],
@@ -58,8 +57,8 @@ def parse_audio_lecture_from_json(json_filepath):
     
     return parsed_audio_lecture
 
-#assume start_time is in decimals
-def segment_audio_lecture(audiolec: AudioLecture, start_time, duration, is_play=False):
+#assume start_time and duration in ms
+def segment_audio_lecture(audiolec: AudioLecture, start_time_ms, duration_ms, is_play=False):
     #should return new audioLecture
     name = audiolec.name
     json_file = f"../../data/json_lectures/{name}.json"
@@ -69,8 +68,6 @@ def segment_audio_lecture(audiolec: AudioLecture, start_time, duration, is_play=
     new_audio_lecture = copy.copy(audiolec)
     
     # segment timestamp array based on start time and end time
-    start_time_ms = convert_timestamp_to_ms(start_time)
-    duration_ms = convert_timestamp_to_ms(duration)
     fullstop_timestamps = data["fullstop_timestamps"]
     new_timestamps_array = []
     
@@ -81,18 +78,17 @@ def segment_audio_lecture(audiolec: AudioLecture, start_time, duration, is_play=
             #new_timestamps_array.append(timestamp - start_time_ms)
             new_timestamps_array.append(timestamp)
     
-    new_audio_lecture.name = f"{name}_{str(start_time)}_{str(start_time + duration)}"
+    new_audio_lecture.name = f"{name}_{str(start_time_ms)}_{str(start_time_ms + duration_ms)}"
     new_audio_lecture.is_full = False
     new_audio_lecture.start_time = start_time_ms
     new_audio_lecture.duration = duration_ms
-    print(f"new audio lecture duration: {new_audio_lecture.duration}")
+    #print(f"new audio lecture duration: {new_audio_lecture.duration}")
     new_audio_lecture.generate_spectrogram(f"{audiolec.audio_filepath}.mp3", f"../../data/lectures_segments/spectrograms/{new_audio_lecture.name}.png")
     new_audio_lecture.fullstop_timestamps = new_timestamps_array
     new_audio_lecture.duration = duration_ms #reset duration_ms, figure smth out
     
     #create json file
     new_audio_lecture.to_json(f"../../data/lectures_segments/json/{new_audio_lecture.name}.json")
-    print("Segmented audio lecture")
     
     if is_play:
         #audio_file = audiolec.audio_filepath
@@ -101,3 +97,8 @@ def segment_audio_lecture(audiolec: AudioLecture, start_time, duration, is_play=
         segment = audio[start_time_ms:start_time_ms+duration_ms]
         play(segment)
 
+def divide_audio_into_segments(audiolec: AudioLecture, unit_duration_ms, total_count):
+    total_duration_ms = audiolec.duration
+    start_indx_diff = total_duration_ms // total_count
+    for curr_start in range(0, total_duration_ms - start_indx_diff, start_indx_diff):
+        segment_audio_lecture(audiolec, curr_start, unit_duration_ms)
