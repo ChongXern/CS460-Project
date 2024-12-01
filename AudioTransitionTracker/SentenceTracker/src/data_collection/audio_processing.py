@@ -59,7 +59,9 @@ def parse_audio_lecture_from_json(json_filepath):
 
 #assume start_time and duration in ms
 def segment_audio_lecture(audiolec: AudioLecture, start_time_ms, duration_ms, is_play=False):
-    #should return new audioLecture
+    #returns if segmentation successful or not (any fullstops present or if already segmented)
+    if not audiolec.is_full: 
+        return False
     name = audiolec.name
     json_file = f"../../data/json_lectures/{name}.json"
     with open(json_file, 'r') as file:
@@ -96,9 +98,16 @@ def segment_audio_lecture(audiolec: AudioLecture, start_time_ms, duration_ms, is
         audio = AudioSegment.from_file(audio_file)
         segment = audio[start_time_ms:start_time_ms+duration_ms]
         play(segment)
+    
+    return len(new_timestamps_array) > 0
 
-def divide_audio_into_segments(audiolec: AudioLecture, unit_duration_ms, total_count):
+def divide_audio_into_segments(audiolec: AudioLecture, unit_duration_ms: int, total_count: int):
     total_duration_ms = audiolec.duration
     start_indx_diff = total_duration_ms // total_count
-    for curr_start in range(0, total_duration_ms - start_indx_diff, start_indx_diff):
-        segment_audio_lecture(audiolec, curr_start, unit_duration_ms)
+    for i in range(total_count):
+        curr_start = i * start_indx_diff
+        if curr_start + unit_duration_ms > total_duration_ms:
+            curr_start = total_duration_ms - unit_duration_ms
+        
+        if not segment_audio_lecture(audiolec, curr_start, unit_duration_ms):
+            print(f"No segments made for start_time={curr_start}")

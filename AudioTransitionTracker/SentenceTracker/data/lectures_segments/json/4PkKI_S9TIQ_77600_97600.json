@@ -1,0 +1,14 @@
+{
+    "name": "4PkKI_S9TIQ_77600_97600",
+    "url": "https://www.youtube.com/watch?v=4PkKI_S9TIQ",
+    "audio_filepath": "../../data/audio_files/audio_4PkKI_S9TIQ",
+    "spectrogram_filepath": "../../data/spectrograms/4PkKI_S9TIQ.png",
+    "start_time": 77600,
+    "duration": 20000,
+    "is_full": false,
+    "fullstop_timestamps": [
+        79000,
+        86000,
+        95000
+    ]
+}
