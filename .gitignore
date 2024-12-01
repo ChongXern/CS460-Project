@@ -1,3 +1,5 @@
 cs460_env
-AudioTransitionTracker/src/audio_files
+AudioTransitionTracker/SentenceTracker/data/audio_files
+AudioTransitionTracker/SentenceTracker/__pycache__
+AudioTransitionTracker/SentenceTracker/src/data_collection/__pycache__
 useful\ research
