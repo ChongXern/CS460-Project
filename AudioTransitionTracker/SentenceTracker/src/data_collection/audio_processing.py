@@ -7,7 +7,7 @@ from pydub.playback import play
 from audio_lecture import AudioLecture
 from utils import extract_id_from_url, convert_timestamp_to_ms
 
-def create_new_audio_lecture(video_url):
+def create_new_audio_lecture(video_url, is_create_spectrogram=True):
     output_dir = "../../data/audio_files"
     json_dir = "../../data/json_lectures"
     spectrogram_dir = "../../data/spectrograms"
@@ -19,7 +19,7 @@ def create_new_audio_lecture(video_url):
     name = extract_id_from_url(video_url)
 
     os.makedirs(spectrogram_dir, exist_ok=True)
-    output_image_path = os.path.join(spectrogram_dir, f"{name}.png")
+    output_image_path = os.path.join(spectrogram_dir, f"{name}.png") if is_create_spectrogram else None
     
     # Create AudioLecture instance
     audio_lecture = AudioLecture(
@@ -31,8 +31,11 @@ def create_new_audio_lecture(video_url):
         fullstop_timestamps=fullstop_timestamps
     )
 
-    audio_lecture.generate_spectrogram(f"{audio_filepath}.mp3", output_image_path)
-    audio_lecture.spectrogram_filepath = output_image_path  # Update the spectrogram filepath
+    if is_create_spectrogram:
+        audio_lecture.generate_spectrogram(f"{audio_filepath}.mp3", output_image_path)
+        audio_lecture.spectrogram_filepath = output_image_path  # Update the spectrogram filepath
+    else:
+        audio_lecture.spectrogram_filepath = ""
     
     os.makedirs(json_dir, exist_ok=True)
     json_path = os.path.join(json_dir, f"{name}.json")
@@ -58,7 +61,7 @@ def parse_audio_lecture_from_json(json_filepath):
     return parsed_audio_lecture
 
 #assume start_time and duration in ms
-def segment_audio_lecture(audiolec: AudioLecture, start_time_ms, duration_ms, is_play=False):
+def segment_audio_lecture(audiolec: AudioLecture, start_time_ms, duration_ms, is_play=False, is_create_spectrogram=True):
     #returns if segmentation successful or not (any fullstops present or if already segmented)
     if not audiolec.is_full: 
         return False
@@ -77,7 +80,6 @@ def segment_audio_lecture(audiolec: AudioLecture, start_time_ms, duration_ms, is
         if timestamp >= start_time_ms + duration_ms:
             break
         if timestamp + 2 > start_time_ms:
-            #new_timestamps_array.append(timestamp - start_time_ms)
             new_timestamps_array.append(timestamp)
     
     new_audio_lecture.name = f"{name}_{str(start_time_ms)}_{str(start_time_ms + duration_ms)}"
@@ -85,7 +87,10 @@ def segment_audio_lecture(audiolec: AudioLecture, start_time_ms, duration_ms, is
     new_audio_lecture.start_time = start_time_ms
     new_audio_lecture.duration = duration_ms
     #print(f"new audio lecture duration: {new_audio_lecture.duration}")
-    new_audio_lecture.generate_spectrogram(f"{audiolec.audio_filepath}.mp3", f"../../data/lectures_segments/spectrograms/{new_audio_lecture.name}.png")
+    if is_create_spectrogram:
+        new_audio_lecture.generate_spectrogram(f"{audiolec.audio_filepath}.mp3", f"../../data/lectures_segments/spectrograms/{new_audio_lecture.name}.png")
+    else:
+        new_audio_lecture.spectrogram_filepath = ""
     new_audio_lecture.fullstop_timestamps = new_timestamps_array
     new_audio_lecture.duration = duration_ms #reset duration_ms, figure smth out
     
