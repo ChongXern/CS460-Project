@@ -1,0 +1,14 @@
+{
+    "name": "AsNTP8Kwu80_899400_919400",
+    "url": "AsNTP8Kwu80",
+    "audio_filepath": "../../data/audio_files/audio_AsNTP8Kwu80.mp3",
+    "spectrogram_filepath": "../../data/spectrograms/AsNTP8Kwu80.png",
+    "start_time": 899400,
+    "duration": 20000,
+    "is_full": false,
+    "fullstop_timestamps": [
+        906000,
+        912000,
+        919000
+    ]
+}
