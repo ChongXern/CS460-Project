@@ -14,7 +14,7 @@ if __name__ == "__main__":
             if mode.lower() == 'p' or mode.lower() == 'parse':
                 existing_urls = load_urls("urls.txt")
                 #video_url = input("Input URL: ")
-                video_url = video_id if is_url else f"https://www.youtube.com/watch?v={video_id}"
+                video_url = create_item_from_id(video_id, "u")
                 if video_url in existing_urls:
                     print("URL already converted into AudioLecture object")
                 else:
@@ -35,7 +35,8 @@ if __name__ == "__main__":
                         unit_duration_ms = (int)(input("Unit duration length (seconds): ")) * 1000
                         print(f"Recommended total segments for {unit_duration_ms} ms is {duration // unit_duration_ms}")
                         total_count = (int)(input(f"Total segments: "))
-                        divide_audio_into_segments(audio_lec, unit_duration_ms, total_count)
+                        is_create_spectrogram = 'y' in input("Generate spectrogram? ")
+                        divide_audio_into_segments(audio_lec, unit_duration_ms, total_count, is_create_spectrogram)
                 else:
                     print("Item is already segmented")
         except FileNotFoundError: 

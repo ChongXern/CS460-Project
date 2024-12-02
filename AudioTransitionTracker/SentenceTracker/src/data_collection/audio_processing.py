@@ -107,7 +107,7 @@ def segment_audio_lecture(audiolec: AudioLecture, start_time_ms, duration_ms, is
     
     return len(new_timestamps_array) > 0
 
-def divide_audio_into_segments(audiolec: AudioLecture, unit_duration_ms: int, total_count: int):
+def divide_audio_into_segments(audiolec: AudioLecture, unit_duration_ms: int, total_count: int, is_create_spectrogram=True):
     total_duration_ms = audiolec.duration
     start_time_offset_ms = audiolec.start_time
     effective_duration_ms = total_duration_ms - start_time_offset_ms
@@ -119,7 +119,7 @@ def divide_audio_into_segments(audiolec: AudioLecture, unit_duration_ms: int, to
         if curr_start + unit_duration_ms > total_duration_ms + start_time_offset_ms:
             curr_start = total_duration_ms + start_time_offset_ms - unit_duration_ms
         
-        if segment_audio_lecture(audiolec, curr_start, unit_duration_ms):
-            animate_loading_bar(total_count, i)
+        if segment_audio_lecture(audiolec, curr_start, unit_duration_ms, is_create_spectrogram=is_create_spectrogram):
+            animate_loading_bar(total_count, i + 1)
         else:
             print(f"No segments made for start_time={curr_start}")
