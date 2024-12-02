@@ -1,6 +1,6 @@
 import json
 import math
-from utils import convert_timestamp_to_ms
+from utils import convert_timestamp_to_ms, extract_id_from_url
 
 def convert_timestamps_in_json(json_filepath):
     with open(json_filepath, 'r') as file:
@@ -36,6 +36,7 @@ def check_valid(json_filepath):
     return True
 
 json_filepath = input("INPUT JSON FILE: ")
+json_filepath = json_filepath if "youtube.com" not in json_filepath else extract_id_from_url(json_filepath)
 mode = input("Check order? ")
 if mode.lower() == 'y':
     is_in_order = check_valid(f"../../data/json_lectures/{json_filepath}.json")
