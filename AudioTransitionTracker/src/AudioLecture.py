@@ -231,6 +231,22 @@ def save_url(filename, user_input):
     with open(filename, 'a') as file:
         file.write(user_input + '\n')
 
+def extract_id_from_url(video_url):
+    return video_url.split('=')[-1]
+
+def create_item_from_id(video_id, mode):
+    #switch case for url, spectrogram_file, audio_filepath
+    # print("Available Modes:\nU: URL\nS: Spectrogram filepath\nA: Audio filepath\n")
+    match mode:
+        case "u":
+            return f"https://www.youtube.com/watch?v={video_id}"
+        case "s":
+            return f"spectrograms/{video_id}.png"
+        case "a":
+            return f"/audio_files/audio_{video_id}.mp3"
+        case _:
+            return "Invalid id-to-format mode"
+
 if __name__ == "__main2__":
     existing_urls = load_urls("urls.txt")
     video_url = input("Input URL: ")
