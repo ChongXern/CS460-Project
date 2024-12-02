@@ -1,0 +1,15 @@
+{
+    "name": "p9yZNLeOj4s_121824_141824",
+    "url": "https://www.youtube.com/watch?v=p9yZNLeOj4s",
+    "audio_filepath": "../../data/audio_files/audio_p9yZNLeOj4s.mp3",
+    "spectrogram_filepath": "../../data/spectrograms/p9yZNLeOj4s.png",
+    "start_time": 121824,
+    "duration": 20000,
+    "is_full": false,
+    "fullstop_timestamps": [
+        123000,
+        129000,
+        138000,
+        141000
+    ]
+}

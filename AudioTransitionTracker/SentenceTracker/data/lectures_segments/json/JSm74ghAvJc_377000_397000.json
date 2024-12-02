@@ -1,0 +1,14 @@
+{
+    "name": "JSm74ghAvJc_377000_397000",
+    "url": "https://www.youtube.com/watch?v=JSm74ghAvJc",
+    "audio_filepath": "../../data/audio_files/audio_JSm74ghAvJc.mp3",
+    "spectrogram_filepath": "../../data/spectrograms/JSm74ghAvJc.png",
+    "start_time": 377000,
+    "duration": 20000,
+    "is_full": false,
+    "fullstop_timestamps": [
+        380000,
+        390000,
+        396000
+    ]
+}
