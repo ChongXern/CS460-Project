@@ -35,10 +35,10 @@ class AudioLecture:
             'is_full': self.is_full,
             'fullstop_timestamps': self.fullstop_timestamps
         }
-        print(f"new audio lecture duration: {data['duration']}"),
+        #print(f"new audio lecture duration: {data['duration']}"),
         with open(json_filepath, 'w') as file:
             json.dump(data, file, indent=4)
-        print(f"JSON saved to {json_filepath}")
+        #print(f"JSON saved to {json_filepath}")
 
     def extract_audio_from_youtube(video_url, filename):
         video_id = extract_id_from_url(video_url)

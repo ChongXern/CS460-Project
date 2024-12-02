@@ -14,14 +14,13 @@ if __name__ == "__main__":
             if mode.lower() == 'p' or mode.lower() == 'parse':
                 existing_urls = load_urls("urls.txt")
                 #video_url = input("Input URL: ")
-                if not is_url:
-                    video_url = f"https://www.youtube.com/watch?v={video_id}"
+                video_url = video_id if is_url else f"https://www.youtube.com/watch?v={video_id}"
                 if video_url in existing_urls:
                     print("URL already converted into AudioLecture object")
                 else:
                     create_new_audio_lecture(video_url)
                     existing_urls.add(video_url)
-                    save_url("urls.txt", video_url)
+                    save_url("../urls.txt", video_url)
                     print("URL saved, converting to AudioLecture")
             elif mode.lower() != 'q':
                 json_file = f"../../data/json_lectures/{video_id}.json"
@@ -34,6 +33,7 @@ if __name__ == "__main__":
                         duration = audio_lec.duration
                         print(f"FYI, total duration: {duration} ms or {duration // 60000} min {(duration % 60000) // 1000} s")
                         unit_duration_ms = (int)(input("Unit duration length (seconds): ")) * 1000
+                        print(f"Recommended total segments for {unit_duration_ms} ms is {duration // unit_duration_ms}")
                         total_count = (int)(input(f"Total segments: "))
                         divide_audio_into_segments(audio_lec, unit_duration_ms, total_count)
                 else:

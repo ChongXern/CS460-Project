@@ -1,4 +1,6 @@
 import math
+import sys
+import time
 
 def convert_timestamp_to_ms(timestamp):
     minute = math.floor(timestamp)
@@ -19,3 +21,12 @@ def save_url(filename, user_input):
 
 def extract_id_from_url(video_url):
     return video_url.split('=')[-1]
+
+def animate_loading_bar(total, curr, bar_length=60):
+    percentage = curr / total
+    filled_length = int(bar_length * percentage)
+    
+    bar = '#' * filled_length + '-' * (bar_length - filled_length)
+
+    sys.stdout.write(f"\r|{bar}| {100 * percentage:.2f}%")
+    sys.stdout.flush()

@@ -1,6 +1,7 @@
 import os
 import json
 import copy
+from utils import animate_loading_bar
 from pydub import AudioSegment
 from pydub.playback import play
 
@@ -88,7 +89,7 @@ def segment_audio_lecture(audiolec: AudioLecture, start_time_ms, duration_ms, is
     new_audio_lecture.duration = duration_ms
     #print(f"new audio lecture duration: {new_audio_lecture.duration}")
     if is_create_spectrogram:
-        new_audio_lecture.generate_spectrogram(f"{audiolec.audio_filepath}.mp3", f"../../data/lectures_segments/spectrograms/{new_audio_lecture.name}.png")
+        new_audio_lecture.generate_spectrogram(f"{audiolec.audio_filepath}", f"../../data/lectures_segments/spectrograms/{new_audio_lecture.name}.png")
     else:
         new_audio_lecture.spectrogram_filepath = ""
     new_audio_lecture.fullstop_timestamps = new_timestamps_array
@@ -108,11 +109,17 @@ def segment_audio_lecture(audiolec: AudioLecture, start_time_ms, duration_ms, is
 
 def divide_audio_into_segments(audiolec: AudioLecture, unit_duration_ms: int, total_count: int):
     total_duration_ms = audiolec.duration
-    start_indx_diff = total_duration_ms // total_count
+    start_time_offset_ms = audiolec.start_time
+    effective_duration_ms = total_duration_ms - start_time_offset_ms
+    
+    start_indx_diff = effective_duration_ms // total_count
+    
     for i in range(total_count):
-        curr_start = i * start_indx_diff
-        if curr_start + unit_duration_ms > total_duration_ms:
-            curr_start = total_duration_ms - unit_duration_ms
+        curr_start = start_time_offset_ms + i * start_indx_diff
+        if curr_start + unit_duration_ms > total_duration_ms + start_time_offset_ms:
+            curr_start = total_duration_ms + start_time_offset_ms - unit_duration_ms
         
-        if not segment_audio_lecture(audiolec, curr_start, unit_duration_ms):
+        if segment_audio_lecture(audiolec, curr_start, unit_duration_ms):
+            animate_loading_bar(total_count, i)
+        else:
             print(f"No segments made for start_time={curr_start}")
