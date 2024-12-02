@@ -1,0 +1,13 @@
+{
+    "name": "_h30HBYxtws_259680_279680",
+    "url": "https://www.youtube.com/watch?v=_h30HBYxtws",
+    "audio_filepath": "../../data/audio_files/audio__h30HBYxtws.mp3",
+    "spectrogram_filepath": "../../data/spectrograms/_h30HBYxtws.png",
+    "start_time": 259680,
+    "duration": 20000,
+    "is_full": false,
+    "fullstop_timestamps": [
+        267000,
+        276000
+    ]
+}
