@@ -1,0 +1,14 @@
+{
+    "name": "PujjqfUhtNo_262821_282821",
+    "url": "https://www.youtube.com/watch?v=PujjqfUhtNo",
+    "audio_filepath": "../../data/audio_files/audio_PujjqfUhtNo",
+    "spectrogram_filepath": "../../data/spectrograms/PujjqfUhtNo.png",
+    "start_time": 262821,
+    "duration": 20000,
+    "is_full": false,
+    "fullstop_timestamps": [
+        264000,
+        269000,
+        277000
+    ]
+}
