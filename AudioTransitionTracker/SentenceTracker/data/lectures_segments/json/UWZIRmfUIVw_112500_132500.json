@@ -1,0 +1,14 @@
+{
+    "name": "UWZIRmfUIVw_112500_132500",
+    "url": "https://www.youtube.com/watch?v=UWZIRmfUIVw",
+    "audio_filepath": "../../data/audio_files/audio_UWZIRmfUIVw.mp3",
+    "spectrogram_filepath": "../../data/spectrograms/UWZIRmfUIVw.png",
+    "start_time": 112500,
+    "duration": 20000,
+    "is_full": false,
+    "fullstop_timestamps": [
+        117000,
+        122000,
+        129000
+    ]
+}
