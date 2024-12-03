@@ -99,8 +99,8 @@ def extract_features_and_labels(data):
     return np.array(X), np.array(y)
 
 def save_datasets(X_train, X_test, y_train, y_test):
-    np.savez('data/audio_data_train.npz', X_train=X_train, y_train=y_train)
-    np.savez('data/audio_data_test.npz', X_test=X_test, y_test=y_test)
+    np.savez('../../data/audio_data_train.npz', X_train=X_train, y_train=y_train)
+    np.savez('../../data/audio_data_test.npz', X_test=X_test, y_test=y_test)
     print("Datasets saved successfully!")
 
 if __name__ == "__main__":
