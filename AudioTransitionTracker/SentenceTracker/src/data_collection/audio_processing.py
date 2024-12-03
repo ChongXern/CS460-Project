@@ -93,14 +93,18 @@ def segment_audio_lecture(audiolec: AudioLecture, start_time_ms, duration_ms, is
     new_audio_lecture.duration = duration_ms
     #print(f"new audio lecture duration: {new_audio_lecture.duration}")
     if is_create_spectrogram:
-        new_audio_lecture.generate_spectrogram(f"{audiolec.audio_filepath}", f"../../data/lectures_segments/spectrograms/{new_audio_lecture.name}.png")
+        if "mp3" in audiolec.audio_filepath:
+            audio_filepath = audiolec.audio_filepath
+        else:
+            audio_filepath = f"{audiolec.audio_filepath}.mp3"
+        new_audio_lecture.generate_spectrogram(audio_filepath, f"../../data/spectrograms/{new_audio_lecture.name}.png")
     else:
         new_audio_lecture.spectrogram_filepath = ""
     new_audio_lecture.fullstop_timestamps = new_timestamps_array
     new_audio_lecture.duration = duration_ms #reset duration_ms, figure smth out
     
     #create json file
-    new_audio_lecture.to_json(f"../../data/lectures_segments/json/{new_audio_lecture.name}.json")
+    new_audio_lecture.to_json(f"../../data/json_lectures/{new_audio_lecture.name}.json")
     
     if is_play:
         #audio_file = audiolec.audio_filepath
@@ -117,6 +121,7 @@ def divide_audio_into_segments(audiolec: AudioLecture, unit_duration_ms: int, to
     effective_duration_ms = total_duration_ms - start_time_offset_ms
     
     start_indx_diff = effective_duration_ms // total_count
+    count_no_segments = 0
     
     for i in range(total_count):
         curr_start = start_time_offset_ms + i * start_indx_diff
@@ -127,3 +132,6 @@ def divide_audio_into_segments(audiolec: AudioLecture, unit_duration_ms: int, to
             animate_loading_bar(total_count, i + 1)
         else:
             print(f"No segments made for start_time={curr_start}")
+            count_no_segments += 1
+        
+    print(f"Total no segments: {count_no_segments}")
