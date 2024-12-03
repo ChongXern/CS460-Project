@@ -3,5 +3,4 @@ AudioTransitionTracker/SentenceTracker/data/audio_files
 useful\ research
 AudioTransitionTracker/SentenceTracker/transcripts
 __pycache__
-AudioTransitionTracker/SentenceTracker/data/audio_data_test.npz
-AudioTransitionTracker/SentenceTracker/data/audio_data_train.npz
+AudioTransitionTracker/SentenceTracker/data/npz

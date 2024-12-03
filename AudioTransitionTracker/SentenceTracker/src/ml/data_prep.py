@@ -80,7 +80,7 @@ def generate_spectrogram_array(item):
 
     return S_db.T
 
-def extract_features_and_labels(data):
+def extract_features_and_labels_fullstop_exists(data):
     X = []
     y = []
     
@@ -89,7 +89,6 @@ def extract_features_and_labels(data):
         spectrogram_data = generate_spectrogram_array(item)
         X.append(spectrogram_data)
         
-        # Create label: 1 if full stop exists within segment, 0 otherwise
         has_fullstop = any(item['start_time'] <= ts < (item['start_time'] + item['duration'])
                            for ts in item['fullstop_timestamps'])
         y.append(1 if has_fullstop else 0)
@@ -99,14 +98,40 @@ def extract_features_and_labels(data):
     return np.array(X), np.array(y)
 
 def save_datasets(X_train, X_test, y_train, y_test):
-    np.savez('../../data/audio_data_train.npz', X_train=X_train, y_train=y_train)
-    np.savez('../../data/audio_data_test.npz', X_test=X_test, y_test=y_test)
+    np.savez('../../data/npz/fullstop_prediction_train.npz', X_train=X_train, y_train=y_train)
+    np.savez('../../data/npz/fullstop_prediction_test.npz', X_test=X_test, y_test=y_test)
     print("Datasets saved successfully!")
+
+def extract_features_and_labels_fullstop_timing(data):
+    X = []
+    y = []
+    
+    for i, item in enumerate(data):
+        print(f"Processing item {i + 1}/{len(data)}: {item['name']}")
+        spectrogram_data = generate_spectrogram_array(item)
+        X.append(spectrogram_data)
+        
+        # Calculate full stop timing relative to segment start
+        relative_fullstop_times = []
+        for ts in item['fullstop_timestamps']:
+            if item['start_time'] <= ts < (item['start_time'] + item['duration']):
+                relative_time = ts - item['start_time']
+                relative_fullstop_times.append(relative_time)
+        
+        # Use the first full stop time, or -1 if none exist
+        if relative_fullstop_times:
+            y.append(relative_fullstop_times[0])
+        else:
+            y.append(-1)
+
+        animate_loading_bar(len(data), i + 1)
+    
+    return np.array(X), np.array(y)
 
 if __name__ == "__main__":
     json_dir = "../../data/lectures_segments/json"
     json_data = load_json_files(json_dir)
     print(f"total data is {len(json_data)}")
-    X, y = extract_features_and_labels(json_data)
+    X, y = extract_features_and_labels_fullstop_timing(json_data)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     save_datasets(X_train, X_test, y_train, y_test)
