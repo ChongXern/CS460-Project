@@ -1,0 +1,12 @@
+{
+    "name": "FDuCJGB-XbY_32700_42700",
+    "url": "https://www.youtube.com/watch?v=FDuCJGB-XbY",
+    "audio_filepath": "../../data/audio_files/audio_FDuCJGB-XbY.mp3",
+    "spectrogram_filepath": "../../data/spectrograms/FDuCJGB-XbY.png",
+    "start_time": 32700,
+    "duration": 10000,
+    "is_full": false,
+    "fullstop_timestamps": [
+        36000
+    ]
+}
