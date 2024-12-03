@@ -1,6 +1,5 @@
 from audio_processing import *
 from utils import *
-import traceback
 
 if __name__ == "__main__":
     while True:

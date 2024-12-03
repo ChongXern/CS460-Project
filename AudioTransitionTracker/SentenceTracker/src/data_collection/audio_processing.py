@@ -1,6 +1,10 @@
 import os
 import json
 import copy
+import librosa
+import numpy as np
+import matplotlib as plt
+import matplotlib.ticker as mticker
 from utils import animate_loading_bar
 from pydub import AudioSegment
 from pydub.playback import play

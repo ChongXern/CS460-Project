@@ -1,6 +1,5 @@
 import math
 import sys
-import time
 
 def convert_timestamp_to_ms(timestamp):
     minute = math.floor(timestamp)
