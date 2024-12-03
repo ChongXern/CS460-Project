@@ -40,7 +40,7 @@ def pad_or_truncate_spectrogram(S, target_shape=(862, 1025)):
 def generate_spectrogram_array(item):
     json_filename = item["name"]
     
-    directory = "../../data/lectures_segments/json_test"
+    directory = "../../data/lectures_segments/json"
     filepath = f"{directory}/{json_filename}.json"
     
     print(f"Reading JSON from: {filepath}")
@@ -99,31 +99,14 @@ def extract_features_and_labels(data):
     return np.array(X), np.array(y)
 
 def save_datasets(X_train, X_test, y_train, y_test):
-    np.savez('audio_data_train.npz', X_train=X_train, y_train=y_train)
-    np.savez('audio_data_test.npz', X_test=X_test, y_test=y_test)
+    np.savez('data/audio_data_train.npz', X_train=X_train, y_train=y_train)
+    np.savez('data/audio_data_test.npz', X_test=X_test, y_test=y_test)
     print("Datasets saved successfully!")
 
-if __name__ == "__min__":
-    json_dir = "../../data/lectures_segments/json_test"
+if __name__ == "__main__":
+    json_dir = "../../data/lectures_segments/json"
     json_data = load_json_files(json_dir)
     print(f"total data is {len(json_data)}")
     X, y = extract_features_and_labels(json_data)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     save_datasets(X_train, X_test, y_train, y_test)
-    
-
-if __name__ == "__main__":
-    #json_file = input("INPUT JSON FILE: ")
-    item = {
-        'name': 'p9yZNLeOj4s_253800_263800',
-        'url': 'https://www.youtube.com/watch?v=p9yZNLeOj4s',
-        'audio_filepath': '../../data/audio_files/audio_p9yZNLeOj4s.mp3',
-        'spectrogram_filepath': '../../data/spectrograms/p9yZNLeOj4s.png',
-        'start_time': 253800,  # in milliseconds
-        'duration': 10000,     # in milliseconds
-        'is_full': False,
-        'fullstop_timestamps': []
-    }
-    spectrogram = generate_spectrogram_array(item)
-    print(f"Spectrogram: {spectrogram}")
-    print(f"Spectrogram shape: {spectrogram.shape}")
