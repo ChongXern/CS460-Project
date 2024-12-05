@@ -1,0 +1,12 @@
+{
+    "name": "V2Gxqv3bJCk_50000_55000",
+    "url": "https://www.youtube.com/watch?v=V2Gxqv3bJCk",
+    "audio_filepath": "../../data/audio_files/audio_V2Gxqv3bJCk.mp3",
+    "spectrogram_filepath": "../../data/spectrograms/V2Gxqv3bJCk.png",
+    "start_time": 50000,
+    "duration": 5000,
+    "is_full": false,
+    "fullstop_timestamps": [
+        52000
+    ]
+}
