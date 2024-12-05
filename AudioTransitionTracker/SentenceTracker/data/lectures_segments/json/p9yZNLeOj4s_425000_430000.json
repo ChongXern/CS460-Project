@@ -1,0 +1,12 @@
+{
+    "name": "p9yZNLeOj4s_425000_430000",
+    "url": "https://www.youtube.com/watch?v=p9yZNLeOj4s",
+    "audio_filepath": "../../data/audio_files/audio_p9yZNLeOj4s.mp3",
+    "spectrogram_filepath": "../../data/spectrograms/p9yZNLeOj4s.png",
+    "start_time": 425000,
+    "duration": 5000,
+    "is_full": false,
+    "fullstop_timestamps": [
+        425000
+    ]
+}

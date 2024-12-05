@@ -34,7 +34,8 @@ if __name__ == "__main__":
                     print(f"Recommended total segments for {unit_duration_ms} ms is {duration // unit_duration_ms}")
                     total_count = (int)(input(f"Total segments: "))
                     is_create_spectrogram = 'y' in input("Generate spectrogram? ")
-                    divide_audio_into_segments(audio_lec, unit_duration_ms, total_count, is_create_spectrogram)
+                    no_segments = divide_audio_into_segments(audio_lec, unit_duration_ms, total_count, is_create_spectrogram)
+                    print(f"Create {total_count} {unit_duration_ms}-sec segments for {video_id} (No segments = {no_segments})")
             else:
                 print("Item is already segmented")
         else: 

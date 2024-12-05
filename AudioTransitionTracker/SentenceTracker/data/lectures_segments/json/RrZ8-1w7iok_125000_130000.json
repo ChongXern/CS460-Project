@@ -1,0 +1,10 @@
+{
+    "name": "RrZ8-1w7iok_125000_130000",
+    "url": "https://www.youtube.com/watch?v=RrZ8-1w7iok",
+    "audio_filepath": "../../data/audio_files/audio_RrZ8-1w7iok",
+    "spectrogram_filepath": "../../data/spectrograms/RrZ8-1w7iok.png",
+    "start_time": 125000,
+    "duration": 5000,
+    "is_full": false,
+    "fullstop_timestamps": []
+}
