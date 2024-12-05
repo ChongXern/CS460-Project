@@ -1,0 +1,12 @@
+{
+    "name": "AsNTP8Kwu80_750000_755000",
+    "url": "https://www.youtube.com/watch?v=AsNTP8Kwu80",
+    "audio_filepath": "../../data/audio_files/audio_AsNTP8Kwu80.mp3",
+    "spectrogram_filepath": "../../data/spectrograms/AsNTP8Kwu80.png",
+    "start_time": 750000,
+    "duration": 5000,
+    "is_full": false,
+    "fullstop_timestamps": [
+        753000
+    ]
+}
