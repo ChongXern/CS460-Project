@@ -97,7 +97,7 @@ def segment_audio_lecture(audiolec: AudioLecture, start_time_ms, duration_ms, is
             audio_filepath = audiolec.audio_filepath
         else:
             audio_filepath = f"{audiolec.audio_filepath}.mp3"
-        new_audio_lecture.generate_spectrogram(audio_filepath, f"../../data/spectrograms/{new_audio_lecture.name}.png")
+        new_audio_lecture.generate_spectrogram(audio_filepath, f"../../data/lectures_segments/spectrograms/{new_audio_lecture.name}.png")
     else:
         new_audio_lecture.spectrogram_filepath = ""
     new_audio_lecture.fullstop_timestamps = new_timestamps_array
@@ -120,18 +120,26 @@ def divide_audio_into_segments(audiolec: AudioLecture, unit_duration_ms: int, to
     start_time_offset_ms = audiolec.start_time
     effective_duration_ms = total_duration_ms - start_time_offset_ms
     
-    start_indx_diff = effective_duration_ms // total_count
     count_no_segments = 0
     
+    # Calculate number of segments based on the unit duration
     for i in range(total_count):
-        curr_start = start_time_offset_ms + i * start_indx_diff
+        curr_start = start_time_offset_ms + i * unit_duration_ms
+
+        # Stop if the next segment would go past the total duration
         if curr_start + unit_duration_ms > total_duration_ms + start_time_offset_ms:
-            curr_start = total_duration_ms + start_time_offset_ms - unit_duration_ms
+            break
         
+        # Generate the segment
         if segment_audio_lecture(audiolec, curr_start, unit_duration_ms, is_create_spectrogram=is_create_spectrogram):
             animate_loading_bar(total_count, i + 1)
         else:
             print(f"No segments made for start_time={curr_start}")
             count_no_segments += 1
-        
+
     print(f"Total no segments: {count_no_segments}")
+
+    # Handle any remaining duration
+    if total_duration_ms % unit_duration_ms != 0:
+        print("Remaining audio detected. Consider adding a smaller segment or ignoring it.")
+    return count_no_segments
