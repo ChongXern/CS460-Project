@@ -1,0 +1,12 @@
+{
+    "name": "GLAK3dF7dfg_25000_30000",
+    "url": "https://www.youtube.com/watch?v=GLAK3dF7dfg",
+    "audio_filepath": "../../data/audio_files/audio_GLAK3dF7dfg",
+    "spectrogram_filepath": "../../data/spectrograms/GLAK3dF7dfg.png",
+    "start_time": 25000,
+    "duration": 5000,
+    "is_full": false,
+    "fullstop_timestamps": [
+        26000
+    ]
+}
