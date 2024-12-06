@@ -1,0 +1,13 @@
+{
+    "name": "gj6IFcygsnc_40000_45000",
+    "url": "https://www.youtube.com/watch?v=gj6IFcygsnc",
+    "audio_filepath": "../../data/audio_files/audio_gj6IFcygsnc.mp3",
+    "spectrogram_filepath": "../../data/spectrograms/gj6IFcygsnc.png",
+    "start_time": 40000,
+    "duration": 5000,
+    "is_full": false,
+    "fullstop_timestamps": [
+        42000,
+        44000
+    ]
+}

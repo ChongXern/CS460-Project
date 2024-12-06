@@ -4,7 +4,29 @@
     "audio_filepath": "../../data/audio_files/audio_gj6IFcygsnc.mp3",
     "spectrogram_filepath": "../../data/spectrograms/gj6IFcygsnc.png",
     "start_time": 0,
-    "duration": 131,
+    "duration": 124000,
     "is_full": true,
-    "fullstop_timestamps": []
+    "fullstop_timestamps": [
+        3000,
+        8000,
+        10000,
+        16000,
+        26000,
+        31000,
+        42000,
+        44000,
+        48000,
+        52000,
+        58000,
+        69000,
+        74000,
+        83000,
+        87000,
+        92000,
+        96000,
+        101000,
+        110000,
+        115000,
+        124000
+    ]
 }
