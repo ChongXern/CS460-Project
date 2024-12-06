@@ -1,0 +1,10 @@
+{
+    "name": "JcnBgb14yZ0_45000_50000",
+    "url": "https://www.youtube.com/watch?v=JcnBgb14yZ0",
+    "audio_filepath": "../../data/audio_files/audio_JcnBgb14yZ0.mp3",
+    "spectrogram_filepath": "../../data/spectrograms/JcnBgb14yZ0.png",
+    "start_time": 45000,
+    "duration": 5000,
+    "is_full": false,
+    "fullstop_timestamps": []
+}
