@@ -92,6 +92,29 @@ def extract_features_and_labels(data, checkpoint_path="checkpoint.npz"):
 
     return np.array(X), np.array(y)
 
+def get_surrounding_segments(item, data, spectrogram_dir):
+    """Fetches spectrograms for the preceding, current, and succeeding segments."""
+    video_id, start_time, end_time = item['name'].split('_')
+    start_time = int(start_time)
+    end_time = int(end_time)
+    
+    current_path = os.path.join(spectrogram_dir, f"{video_id}_{start_time}_{end_time}.png")
+    prev_path = os.path.join(spectrogram_dir, f"{video_id}_{start_time-5000}_{end_time-5000}.png")
+    next_path = os.path.join(spectrogram_dir, f"{video_id}_{start_time+5000}_{end_time+5000}.png")
+    
+    def load_spectrogram(path):
+        if os.path.exists(path):
+            return np.load(path)  # Or however you load your spectrogram
+        else:
+            return np.zeros((216, 1025))  # Zero padding for missing segments
+    
+    prev = load_spectrogram(prev_path)
+    current = load_spectrogram(current_path)
+    next = load_spectrogram(next_path)
+    
+    # Concatenate along the time axis
+    return np.concatenate([prev, current, next], axis=0)  # Shape: (3 * 216, 1025)
+
 if __name__ == "__main__":
     json_dir = "../../data/lectures_segments/json"
     json_data = load_json_files(json_dir)
