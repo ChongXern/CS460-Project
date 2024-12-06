@@ -104,3 +104,4 @@ class AudioLecture:
         plt.tight_layout()
         plt.savefig(output_image_path)
         plt.close()
+
