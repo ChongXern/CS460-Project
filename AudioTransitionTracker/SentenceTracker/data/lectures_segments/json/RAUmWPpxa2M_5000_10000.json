@@ -1,0 +1,12 @@
+{
+    "name": "RAUmWPpxa2M_5000_10000",
+    "url": "https://www.youtube.com/watch?v=RAUmWPpxa2M",
+    "audio_filepath": "../../data/audio_files/audio_RAUmWPpxa2M.mp3",
+    "spectrogram_filepath": "../../data/spectrograms/RAUmWPpxa2M.png",
+    "start_time": 5000,
+    "duration": 5000,
+    "is_full": false,
+    "fullstop_timestamps": [
+        5000
+    ]
+}
