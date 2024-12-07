@@ -1,5 +1,6 @@
 import json
 import os
+import os.path
 import numpy as np
 import librosa
 import sys
@@ -27,39 +28,45 @@ def pad_or_truncate_spectrogram(S, target_shape=(216, 1025)):
         S = S[:, :target_cols]
     return S
 
-def generate_spectrogram_array(item):
-    json_filename = item["name"]
-    directory = "../../data/lectures_segments/json"
-    filepath = f"{directory}/{json_filename}.json"
-    if "_h30HBYxtws" in filepath:
-        audio_filepath = "../../data/audio_files/audio__h30HBYxtws.mp3"
-    elif "4PkKI_S9TIQ" in filepath:
-        audio_filepath = "../../data/audio_files/audio_4PkKI_S9TIQ.mp3"
-    else:
-        audio_filepath = f"../../data/audio_files/audio_{json_filename.split('_')[0]}.mp3"
-    with open(filepath, 'r') as file:
-        data = json.load(file)
-    start_time = data["start_time"]
-    duration = data["duration"]
-    if start_time > 1000 or duration > 1000:
-        start_time /= 1000
-        duration /= 1000
+def generate_spectrogram_array(audio_filepath, start_time, duration, is_full):
     y, sr = librosa.load(audio_filepath)
-    if not data["is_full"]:
+    if not is_full:
         start_sample = int(start_time * sr)
         end_sample = int((start_time + duration) * sr)
-        if end_sample > len(y):
-            end_sample = len(y)
         y = y[start_sample:end_sample]
-    else:
-        print("AudioLecture object is full, try again")
-        exit()
     D = librosa.stft(y)
     S_db = librosa.amplitude_to_db(abs(D), ref=np.max)
     return S_db.T
 
+def get_surrounding_segments(item, data, spectrogram_dir):
+    """Fetches spectrograms for the preceding, current, and succeeding segments."""
+    video_id, start_time, end_time = item['name'].split('_')
+    start_time = int(start_time)
+    end_time = int(end_time)
+
+    def load_spectrogram(video_id, start, end):
+        filepath = os.path.join(spectrogram_dir, f"{video_id}_{start}_{end}.json")
+        if os.path.exists(filepath):
+            with open(filepath, 'r') as file:
+                data = json.load(file)
+            return pad_or_truncate_spectrogram(generate_spectrogram_array(
+                audio_filepath=f"../../data/audio_files/audio_{video_id}.mp3",
+                start_time=data["start_time"],
+                duration=data["duration"],
+                is_full=data["is_full"]
+            ))
+        else:
+            return np.zeros((216, 1025))  # Zero padding for missing segments
+
+    # check if preceding prev spectrogram exists
+    
+    preceding = load_spectrogram(video_id, start_time - 5000, end_time - 5000)
+    current = load_spectrogram(video_id, start_time, end_time)
+    succeeding = load_spectrogram(video_id, start_time + 5000, end_time + 5000)
+
+    return np.concatenate([preceding, current, succeeding], axis=0)  # Shape: (648, 1025)
+
 def extract_features_and_labels(data, checkpoint_path="checkpoint.npz"):
-    # Load checkpoint if exists
     if os.path.exists(checkpoint_path):
         checkpoint = np.load(checkpoint_path)
         X = checkpoint["X"].tolist()
@@ -71,13 +78,13 @@ def extract_features_and_labels(data, checkpoint_path="checkpoint.npz"):
         y = []
         start_index = 0
 
-    # Process data
     for i, item in enumerate(data[start_index:], start=start_index):
         print(f"Processing item {i + 1}/{len(data)}: {item['name']}")
         try:
-            spectrogram_data = generate_spectrogram_array(item)
-            processed_spectrogram = pad_or_truncate_spectrogram(spectrogram_data, target_shape=(216, 1025))
-            X.append(processed_spectrogram)
+            extended_spectrogram = get_surrounding_segments(item, data, "../../data/lectures_segments/json")
+            X.append(extended_spectrogram[..., np.newaxis])  # Add channel dimension
+            
+            # Label only for the middle segment
             has_fullstop = any(
                 item['start_time'] <= ts < (item['start_time'] + item['duration'])
                 for ts in item['fullstop_timestamps']
@@ -91,29 +98,6 @@ def extract_features_and_labels(data, checkpoint_path="checkpoint.npz"):
             print(f"Error processing {item['name']}: {e}")
 
     return np.array(X), np.array(y)
-
-def get_surrounding_segments(item, data, spectrogram_dir):
-    """Fetches spectrograms for the preceding, current, and succeeding segments."""
-    video_id, start_time, end_time = item['name'].split('_')
-    start_time = int(start_time)
-    end_time = int(end_time)
-    
-    current_path = os.path.join(spectrogram_dir, f"{video_id}_{start_time}_{end_time}.png")
-    prev_path = os.path.join(spectrogram_dir, f"{video_id}_{start_time-5000}_{end_time-5000}.png")
-    next_path = os.path.join(spectrogram_dir, f"{video_id}_{start_time+5000}_{end_time+5000}.png")
-    
-    def load_spectrogram(path):
-        if os.path.exists(path):
-            return np.load(path)  # Or however you load your spectrogram
-        else:
-            return np.zeros((216, 1025))  # Zero padding for missing segments
-    
-    prev = load_spectrogram(prev_path)
-    current = load_spectrogram(current_path)
-    next = load_spectrogram(next_path)
-    
-    # Concatenate along the time axis
-    return np.concatenate([prev, current, next], axis=0)  # Shape: (3 * 216, 1025)
 
 if __name__ == "__main__":
     json_dir = "../../data/lectures_segments/json"
