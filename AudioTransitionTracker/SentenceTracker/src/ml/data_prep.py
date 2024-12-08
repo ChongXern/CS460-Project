@@ -7,13 +7,6 @@ import sys
 from sklearn.model_selection import train_test_split
 from utils import load_json_files
 
-def animate_loading_bar(total, curr, bar_length=60):
-    percentage = curr / total
-    filled_length = int(bar_length * percentage)
-    bar = '#' * filled_length + '-' * (bar_length - filled_length)
-    sys.stdout.write(f"\r|{bar}| {100 * percentage:.2f}% ")
-    sys.stdout.flush()
-
 def pad_or_truncate_spectrogram(S, target_shape=(216, 1025)):
     target_rows, target_cols = target_shape
     if S.shape[0] < target_rows:
@@ -39,8 +32,6 @@ def generate_spectrogram_array(audio_filepath, start_time, duration, is_full):
     D = librosa.stft(y)
     S_db = librosa.amplitude_to_db(abs(D), ref=np.max)
     return S_db.T
-
-
 
 def get_surrounding_segments(item, data, spectrogram_dir):
     """Fetches spectrograms for the preceding, current, and succeeding segments."""
