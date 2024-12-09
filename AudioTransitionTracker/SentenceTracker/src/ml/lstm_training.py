@@ -5,24 +5,21 @@ from tensorflow.keras.layers import LSTM, Dense, Dropout, Input
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report, roc_curve, auc
 
-# Load training data
 data_train = np.load('../../data/npz/fullstop_prediction_train_cleaned.npz')
 X_train = data_train['X_train']
+X_train = np.squeeze(X_train, axis=-1)
 y_train = data_train['y_train']
 
-# Normalize training data
 X_train = (X_train - X_train.min()) / (X_train.max() - X_train.min())
 y_train = y_train.reshape(-1, 1)
 
-# Reshape input to match LSTM expected shape (samples, timesteps, features)
 X_train = X_train.reshape(X_train.shape[0], X_train.shape[1], X_train.shape[2])
 
-# Load testing data
 data_test = np.load('../../data/npz/fullstop_prediction_test_cleaned.npz')
 X_test = data_test['X_test']
+X_test = np.squeeze(X_test, axis=-1)
 y_test = data_test['y_test']
 
-# Reshape test data
 X_test = X_test.reshape(X_test.shape[0], X_test.shape[1], X_test.shape[2])
 
 scaler = StandardScaler()
@@ -31,7 +28,6 @@ X_test = scaler.transform(X_test.reshape(-1, X_test.shape[2]))
 X_train = X_train.reshape(-1, 648, 1025)
 X_test = X_test.reshape(-1, 648, 1025)
 
-# Define the model
 model = Sequential([
     Input(shape=(X_train.shape[1], X_train.shape[2])),
     LSTM(64, return_sequences=False),
@@ -41,13 +37,10 @@ model = Sequential([
     Dense(1, activation='sigmoid')
 ])
 
-# Compile the model
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001), loss='binary_crossentropy', metrics=['accuracy'])
 
-# Print model summary
 model.summary()
 
-# Train the model
 model.fit(X_train, y_train, epochs=20, batch_size=32, validation_data=(X_test, y_test))
 
 y_pred = (model.predict(X_test) > 0.5).astype("int32")

@@ -35,10 +35,9 @@ def generate_spectrogram_array(audio_filepath, start_time, duration, is_full):
 
 def get_surrounding_segments(item, data, spectrogram_dir):
     """Fetches spectrograms for the preceding, current, and succeeding segments."""
-    # Check the 'item['name']' format
-    print(f"Processing item: {item['name']}")  # Debugging print
+    print(f"Processing item: {item['name']}")
 
-    # Split the filename to get video_id, start_time, end_time
+    #split filename to get video_id, start_time, end_time
     try:
         video_id = item['name'][:11]
         parts = item['name'][12:].split('_')
@@ -52,16 +51,15 @@ def get_surrounding_segments(item, data, spectrogram_dir):
         print(f"{video_id}, {start_time}, {end_time}")
     except ValueError:
         print(f"Skipping item due to unexpected format: {item['name']}")
-        return None  # Skip this item if the format is unexpected
+        return None
 
     def load_spectrogram(video_id, start, end):
         filepath = os.path.join(spectrogram_dir, f"{video_id}_{start}_{end}.json")
-        print(f"Loading spectrogram: {filepath}")  # Debugging print
+        print(f"Loading spectrogram: {filepath}")
         if os.path.exists(filepath):
             with open(filepath, 'r') as file:
                 data = json.load(file)
             try:
-                # Generate spectrogram array
                 return pad_or_truncate_spectrogram(generate_spectrogram_array(
                     audio_filepath=f"../../data/audio_files/audio_{video_id}.mp3",
                     start_time=int(data["start_time"]),
@@ -76,7 +74,7 @@ def get_surrounding_segments(item, data, spectrogram_dir):
             return None
 
 
-    # Check if preceding spectrogram exists
+    #check if preceding exists
     preceding_filename = f"../../data/lectures_segments/json/{video_id}_{start_time - 5000}_{start_time}.json"
     if not os.path.exists(preceding_filename):
         print(f"No preceding file for {item['name']}, skipping")
@@ -88,21 +86,21 @@ def get_surrounding_segments(item, data, spectrogram_dir):
             print(f"No preceding file for {item['name']}, skipping")
             return None
 
-    # Check if succeeding spectrogram exists
+    #check if succeeding exists
     succeeding_filename = f"../../data/lectures_segments/json/{video_id}_{end_time}_{end_time + 5000}.json"
     if not os.path.exists(succeeding_filename):
         print(f"No succeeding file for {item['name']}, skipping")
-        return None  # Skip this segment if no succeeding segment exists
+        return None
     else:
         succeeding = load_spectrogram(video_id, end_time, end_time + 5000)
         if succeeding is None:
             print(f"No succeeding file for {item['name']}, skipping")
-            return None  # Skip this segment if succeeding segment is missing
+            return None 
 
     current = load_spectrogram(video_id, start_time, end_time)
     if current is None:
         print(f"No current file for {item['name']}, skipping")
-        return None  # Skip if the current segment is missing
+        return None
 
     final_spectrogram_array = np.concatenate([preceding, current, succeeding], axis=0)  # Shape: (648, 1025)
     print(f"SHAPE: {final_spectrogram_array.shape}")
@@ -126,9 +124,8 @@ def extract_features_and_labels(data, checkpoint_path="checkpoint.npz"):
             json_directory = "../../data/lectures_segments/json"
             extended_spectrogram = get_surrounding_segments(item, data, json_directory)
             if extended_spectrogram is None:
-                continue  # Skip if no valid surrounding spectrograms are found
-            X.append(extended_spectrogram[..., np.newaxis])  # Add channel dimension
-            # Label only for the middle segment
+                continue
+            X.append(extended_spectrogram[..., np.newaxis]) #maybe not needed?
             has_fullstop = any(
                 item['start_time'] <= ts < (item['start_time'] + item['duration'])
                 for ts in item['fullstop_timestamps']
@@ -149,7 +146,7 @@ if __name__ == "__main__":
     X, y = extract_features_and_labels(json_data)
     if X.size == 0:
         print("No valid data found after processing, exiting.")
-        exit()  # Exit if no valid data was found
+        exit()
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     np.savez('../../data/npz/fullstop_prediction_train.npz', X_train=X_train, y_train=y_train)
