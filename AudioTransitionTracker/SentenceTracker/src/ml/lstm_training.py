@@ -22,6 +22,19 @@ y_test = data_test['y_test']
 
 X_test = X_test.reshape(X_test.shape[0], X_test.shape[1], X_test.shape[2])
 
+
+# add some noise 
+def add_noise(data, noise_factor=0.005):
+    augmented_data = []
+    for sample in data:
+        noise = np.random.randn(*sample.shape)
+        augmented_sample = sample + noise * noise_factor
+        augmented_sample = np.clip(augmented_sample, 0, 1)
+        augmented_data.append(augmented_sample)
+    return np.array(augmented_data)
+
+X_train = add_noise(X_train)
+
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train.reshape(-1, X_train.shape[2]))
 X_test = scaler.transform(X_test.reshape(-1, X_test.shape[2]))
