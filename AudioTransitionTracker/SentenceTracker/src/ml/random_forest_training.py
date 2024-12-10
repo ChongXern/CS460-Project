@@ -27,7 +27,7 @@ X_test_flattened = X_test.reshape(X_test.shape[0], -1)
 
 X_test_scaled = scaler.transform(X_test_flattened)
 
-rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+rf_model = RandomForestClassifier(n_estimators=200, max_depth=10, min_samples_split=10, min_samples_leaf=5, class_weight='balanced', random_state=42)
 rf_model.fit(X_train_scaled, y_train)
 
 y_pred = rf_model.predict(X_test_scaled)
